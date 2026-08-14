@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Night Lights Per Capita · Hamilton &amp; Neighbors</title>
+  <meta name="description" content="Nighttime brightness standardized by population for Hamilton, Wenham, Topsfield, Ipswich, Rowley, and Essex, Massachusetts." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --night-0: #070b16;
+      --night-1: #0d1528;
+      --mist: rgba(214, 226, 255, 0.72);
+      --ink: #e8eefc;
+      --muted: #9aacc8;
+      --amber: #f0b35a;
+      --amber-soft: rgba(240, 179, 90, 0.35);
+      --line: rgba(180, 200, 240, 0.18);
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Outfit", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.5;
+      background:
+        radial-gradient(1200px 700px at 15% -10%, rgba(70, 110, 180, 0.22), transparent 55%),
+        radial-gradient(900px 600px at 90% 10%, rgba(180, 120, 50, 0.12), transparent 50%),
+        linear-gradient(180deg, var(--night-0), var(--night-1) 45%, #0a1222 100%);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.35;
+      background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 28% 62%, rgba(255,255,255,0.45), transparent),
+        radial-gradient(1.5px 1.5px at 63% 22%, rgba(255,255,255,0.55), transparent),
+        radial-gradient(1px 1px at 81% 48%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 45% 80%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1.5px 1.5px at 72% 78%, rgba(255,255,255,0.5), transparent);
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: min(1140px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2.5rem 0 4rem;
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin: 0 0 0.75rem;
+      animation: rise 0.9s ease both;
+    }
+
+    .lede {
+      max-width: 38rem;
+      color: var(--mist);
+      font-size: 1.08rem;
+      margin: 0 0 2.25rem;
+      animation: rise 0.9s ease 0.1s both;
+    }
+
+    .stage {
+      display: grid;
+      gap: 1.75rem;
+      animation: rise 0.9s ease 0.18s both;
+    }
+
+    @media (min-width: 960px) {
+      .stage {
+        grid-template-columns: 1.05fr 1.15fr;
+        align-items: start;
+        gap: 2.5rem;
+      }
+    }
+
+    .map-block { min-width: 0; }
+
+    .map-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 539 / 406;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #050814;
+      box-shadow: 0 0 0 1px var(--line), 0 30px 80px rgba(0,0,0,0.45);
+      contain: layout size;
+    }
+
+    .map-frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      display: block;
+      transition: opacity 0.28s ease;
+    }
+
+    .map-frame img.is-fading { opacity: 0.35; }
+
+    .map-frame svg.town-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: auto;
+      overflow: hidden;
+      cursor: crosshair;
+      z-index: 1;
+    }
+
+    .map-frame svg.town-overlay path {
+      fill: rgba(255, 255, 255, 0.001);
+      stroke: rgba(200, 214, 240, 0.55);
+      stroke-width: 1.25;
+      vector-effect: non-scaling-stroke;
+      transition: stroke 0.15s ease, stroke-width 0.15s ease, fill 0.15s ease;
+      cursor: pointer;
+    }
+
+    .map-frame svg.town-overlay path.is-hamilton {
+      stroke: #f0b35a;
+      stroke-width: 2.6;
+      filter: drop-shadow(0 0 4px rgba(240, 179, 90, 0.55));
+    }
+
+    .map-frame svg.town-overlay path.is-hovered {
+      stroke: #ffffff;
+      stroke-width: 2.8;
+      fill: rgba(255, 255, 255, 0.08);
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.35));
+    }
+
+    .map-frame svg.town-overlay path.is-hamilton.is-hovered {
+      stroke: #ffe2a8;
+      stroke-width: 3.2;
+      fill: rgba(240, 179, 90, 0.14);
+      filter: drop-shadow(0 0 8px rgba(240, 179, 90, 0.65));
+    }
+
+    .map-frame svg.town-overlay.is-dimming path:not(.is-hovered):not(.is-hamilton) {
+      opacity: 0.35;
+    }
+
+    .tooltip {
+      position: absolute;
+      z-index: 5;
+      pointer-events: none;
+      background: rgba(8, 14, 28, 0.92);
+      border: 1px solid rgba(240, 179, 90, 0.35);
+      color: #e8eefc;
+      font-size: 0.86rem;
+      line-height: 1.35;
+      padding: 0.45rem 0.65rem;
+      border-radius: 6px;
+      white-space: normal;
+      min-width: 10rem;
+      opacity: 0;
+      transform: translate(-50%, -120%);
+      transition: opacity 0.12s ease;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    .tooltip.is-visible { opacity: 1; }
+
+    .tooltip strong {
+      color: #ffe2a8;
+      font-weight: 500;
+    }
+
+    .chart-shell .tooltip {
+      transform: translate(12px, -110%);
+    }
+
+    .year-badge {
+      position: absolute;
+      left: 0.9rem;
+      bottom: 0.85rem;
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      letter-spacing: 0.02em;
+      color: #fff8ea;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.8);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-top: 0.9rem;
+    }
+
+    button.play {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      padding: 0.55rem 0.95rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    button.play:hover {
+      background: rgba(240, 179, 90, 0.12);
+      border-color: var(--amber-soft);
+    }
+
+    .slider-wrap { flex: 1; min-width: 0; }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--amber);
+      cursor: pointer;
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 0.2rem;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem 1rem;
+      margin-top: 0.95rem;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      transition: color 0.15s ease, opacity 0.15s ease;
+    }
+
+    .legend span.is-hovered {
+      color: #fff;
+    }
+
+    .legend.is-dimming span:not(.is-hovered) {
+      opacity: 0.4;
+    }
+
+    .legend i {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .legend .is-hamilton {
+      color: #ffe2a8;
+      font-weight: 500;
+    }
+
+    .legend .is-hamilton i {
+      box-shadow: 0 0 0 2px rgba(240, 179, 90, 0.35);
+    }
+
+    .chart-block { min-width: 0; }
+
+    .chart-label {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      margin: 0 0 0.35rem;
+    }
+
+    .chart-note {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin: 0 0 0.85rem;
+      max-width: 34rem;
+    }
+
+    .chart-shell {
+      width: 100%;
+      height: 340px;
+      position: relative;
+    }
+
+    canvas#chart {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: crosshair;
+    }
+
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem 1.75rem;
+      margin-top: 0.85rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .stat-row strong {
+      color: var(--amber);
+      font-weight: 500;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.8rem;
+      max-width: 48rem;
+      animation: rise 0.9s ease 0.28s both;
+    }
+
+    .footer a { color: #c9d7f0; }
+
+    .nav-link {
+      display: inline-block;
+      margin-bottom: 1.25rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav-link:hover {
+      color: var(--ink);
+      border-bottom-color: var(--amber-soft);
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a class="nav-link" href="compare.html">← Brightness by town (not per capita)</a>
+    <h1 class="brand">Light Per Person,<br />Side by Side</h1>
+    <p class="lede">
+      Nighttime satellite brightness for each town, divided by that town’s population
+      (per 1,000 residents). This helps compare places of different sizes.
+      Hamilton is highlighted on the map and in the chart.
+    </p>
+
+    <section class="stage" aria-label="Night lights comparison over time">
+      <div class="map-block">
+        <div class="map-frame" id="mapFrame" aria-live="polite">
+          <img id="mapImage" alt="Night lights map for Hamilton and neighboring towns" width="539" height="406" />
+          <svg class="town-overlay" id="townOverlay" viewBox="0 0 539 406" preserveAspectRatio="none" role="img" aria-label="Town boundaries"></svg>
+          <div class="tooltip" id="mapTooltip"></div>
+          <div class="year-badge" id="yearBadge">2012</div>
+        </div>
+        <div class="controls">
+          <button class="play" id="playBtn" type="button" aria-pressed="false">Play years</button>
+          <div class="slider-wrap">
+            <input id="yearSlider" type="range" min="0" max="13" value="0" step="1" aria-label="Select year" />
+            <div class="range-labels"><span>2012</span><span>2025</span></div>
+          </div>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+
+      <div class="chart-block">
+        <h2 class="chart-label">Brightness per 1,000 residents</h2>
+        <p class="chart-note">
+          Each line is the sum of snow-free night-light radiance inside the town boundary,
+          divided by estimated population. Hover a town to identify it. Hamilton stays highlighted.
+        </p>
+        <div class="chart-shell">
+          <canvas id="chart" width="700" height="340" aria-label="Multi-town line chart of average night light from 2012 to 2025"></canvas>
+          <div class="tooltip" id="chartTooltip"></div>
+        </div>
+        <div class="stat-row">
+          <div>Selected year: <strong id="statYear">2012</strong></div>
+          <div>Hamilton: <strong id="statHamilton">—</strong></div>
+          <div>Hamilton since 2012: <strong id="statDelta">—</strong></div>
+          <div>Hamilton population: <strong id="statPop">—</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Metric: sum of NASA Black Marble snow-free annual radiance (VNP46A4, Collection 2.0) inside each
+      town boundary, divided by estimated population, expressed per 1,000 residents.
+      Population uses MassGIS / U.S. Census town counts for 2010 and 2020, with linear interpolation
+      between those years and the same annual change extrapolated for 2021–2025.
+      The map still shows absolute night-light brightness (not per capita); the chart is population-standardized.
+      Town outlines from MassGIS. Satellite pixels are about 500 meters across.
+      <br /><br />
+      Sources:
+      <a href="https://doi.org/10.5067/VIIRS/VNP46A4.002" rel="noopener">doi:10.5067/VIIRS/VNP46A4.002</a>
+      ·
+      <a href="https://www.mass.gov/info-details/massgis-data-municipalities" rel="noopener">MassGIS Municipalities</a>
+    </footer>
+  </main>
+
+  <script>
+    const state = {
+      data: null,
+      index: 0,
+      playing: false,
+      timer: null,
+      preloaded: [],
+      fadeToken: 0,
+      hoverTown: null,
+      chartLayout: null,
+      chartHover: null,
+    };
+
+    const mapFrame = document.getElementById("mapFrame");
+    const mapImage = document.getElementById("mapImage");
+    const townOverlay = document.getElementById("townOverlay");
+    const mapTooltip = document.getElementById("mapTooltip");
+    const chartTooltip = document.getElementById("chartTooltip");
+    const yearBadge = document.getElementById("yearBadge");
+    const yearSlider = document.getElementById("yearSlider");
+    const playBtn = document.getElementById("playBtn");
+    const legendEl = document.getElementById("legend");
+    const statYear = document.getElementById("statYear");
+    const statHamilton = document.getElementById("statHamilton");
+    const statDelta = document.getElementById("statDelta");
+    const statPop = document.getElementById("statPop");
+    const canvas = document.getElementById("chart");
+    const ctx = canvas.getContext("2d");
+
+    function fmt(n) {
+      return n.toFixed(1);
+    }
+
+    function fmtPop(n) {
+      return Math.round(n).toLocaleString("en-US");
+    }
+
+    function unitLabel() {
+      return "per 1,000 residents";
+    }
+
+    function townValue(town) {
+      return state.data.series[state.index][town];
+    }
+
+    function setHoverTown(town, { source = null, clientX = null, clientY = null } = {}) {
+      state.hoverTown = town;
+      syncHoverUI({ source, clientX, clientY });
+      drawChart(state.index);
+    }
+
+    function syncHoverUI({ source = null, clientX = null, clientY = null } = {}) {
+      const town = state.hoverTown;
+      const paths = townOverlay.querySelectorAll("path");
+      townOverlay.classList.toggle("is-dimming", Boolean(town));
+      paths.forEach((path) => {
+        path.classList.toggle("is-hovered", path.dataset.town === town);
+      });
+
+      legendEl.classList.toggle("is-dimming", Boolean(town));
+      legendEl.querySelectorAll("span[data-town]").forEach((el) => {
+        el.classList.toggle("is-hovered", el.dataset.town === town);
+      });
+
+      if (town && (source === "map" || mapTooltip.classList.contains("is-visible"))) {
+        const year = state.data.series[state.index].year;
+        const pop = state.data.population.by_year[town][String(year)];
+        mapTooltip.innerHTML = `<strong>${town}</strong><br />${fmt(townValue(town))} ${unitLabel()} · ${year}<br /><span style="opacity:0.75">pop. ${fmtPop(pop)}</span>`;
+        if (clientX != null) {
+          const rect = mapFrame.getBoundingClientRect();
+          mapTooltip.style.left = `${clientX - rect.left}px`;
+          mapTooltip.style.top = `${clientY - rect.top}px`;
+        }
+        if (source === "map") mapTooltip.classList.add("is-visible");
+      } else if (!town) {
+        mapTooltip.classList.remove("is-visible");
+      } else if (source && source !== "map") {
+        mapTooltip.classList.remove("is-visible");
+      }
+
+      if (town && source === "chart" && state.chartHover) {
+        const h = state.chartHover;
+        const pop = state.data.population.by_year[town][String(h.year)];
+        chartTooltip.innerHTML = `<strong>${town}</strong><br />${h.year}: ${fmt(h.value)} ${unitLabel()}<br /><span style="opacity:0.75">pop. ${fmtPop(pop)}</span>`;
+        chartTooltip.style.left = `${h.x}px`;
+        chartTooltip.style.top = `${h.y}px`;
+        chartTooltip.classList.add("is-visible");
+      } else if (!town || source !== "chart") {
+        chartTooltip.classList.remove("is-visible");
+      }
+    }
+
+    function setYear(i) {
+      const series = state.data.series;
+      state.index = Math.max(0, Math.min(series.length - 1, i));
+      yearSlider.value = String(state.index);
+
+      const row = series[state.index];
+      const frame = state.data.frames[state.index];
+      const base = series[0].Hamilton;
+      const delta = ((row.Hamilton - base) / base) * 100;
+
+      const token = ++state.fadeToken;
+      mapImage.classList.add("is-fading");
+      window.setTimeout(() => {
+        if (token !== state.fadeToken) return;
+        mapImage.src = frame.file;
+        mapImage.alt = `Night lights map for ${row.year}`;
+        mapImage.classList.remove("is-fading");
+      }, 120);
+
+      yearBadge.textContent = String(row.year);
+      statYear.textContent = String(row.year);
+      statHamilton.textContent = `${fmt(row.Hamilton)} ${unitLabel()}`;
+      const sign = delta > 0 ? "+" : "";
+      statDelta.textContent = `${sign}${delta.toFixed(1)}%`;
+      const hamPop = state.data.population.by_year.Hamilton[String(row.year)];
+      statPop.textContent = fmtPop(hamPop);
+
+      if (state.hoverTown) {
+        syncHoverUI({ source: mapTooltip.classList.contains("is-visible") ? "map" : null });
+      }
+      drawChart(state.index);
+    }
+
+    function drawChart(activeIndex) {
+      const { series, towns, colors, highlight } = state.data;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const cssW = canvas.clientWidth;
+      const cssH = canvas.clientHeight;
+      canvas.width = Math.floor(cssW * dpr);
+      canvas.height = Math.floor(cssH * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, cssW, cssH);
+
+      const pad = { t: 18, r: 16, b: 36, l: 44 };
+      const w = cssW - pad.l - pad.r;
+      const h = cssH - pad.t - pad.b;
+
+      const allVals = towns.flatMap((t) => series.map((d) => d[t]));
+      const yMin = Math.min(...allVals) * 0.88;
+      const yMax = Math.max(...allVals) * 1.08;
+
+      const xAt = (i) => pad.l + (i / (series.length - 1)) * w;
+      const yAt = (v) => pad.t + (1 - (v - yMin) / (yMax - yMin)) * h;
+
+      state.chartLayout = { pad, w, h, xAt, yAt, yMin, yMax, cssW, cssH };
+
+      ctx.strokeStyle = "rgba(180, 200, 240, 0.12)";
+      ctx.lineWidth = 1;
+      for (let g = 0; g < 4; g++) {
+        const y = pad.t + (g / 3) * h;
+        ctx.beginPath();
+        ctx.moveTo(pad.l, y);
+        ctx.lineTo(pad.l + w, y);
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = "#9aacc8";
+      ctx.font = "12px Outfit, sans-serif";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      for (let g = 0; g < 4; g++) {
+        const val = yMax - ((yMax - yMin) * g) / 3;
+        const y = pad.t + (g / 3) * h;
+        ctx.fillText(val.toFixed(0), pad.l - 8, y);
+      }
+
+      const hoverTown = state.hoverTown;
+      // Draw others first; Hamilton next; hovered town last on top
+      const seen = new Set();
+      const ordered = [];
+      [...towns.filter((t) => t !== highlight && t !== hoverTown), highlight, hoverTown]
+        .filter(Boolean)
+        .forEach((t) => {
+          if (!seen.has(t)) {
+            seen.add(t);
+            ordered.push(t);
+          }
+        });
+
+      ordered.forEach((town) => {
+        const isHam = town === highlight;
+        const isHover = town === hoverTown;
+        const dimmed = hoverTown && !isHover;
+        ctx.beginPath();
+        series.forEach((d, i) => {
+          const x = xAt(i);
+          const y = yAt(d[town]);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = colors[town];
+        ctx.globalAlpha = dimmed ? 0.18 : isHover || isHam ? 1 : 0.72;
+        ctx.lineWidth = isHover ? 3.4 : isHam ? 3.1 : 1.6;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        series.forEach((d, i) => {
+          const x = xAt(i);
+          const y = yAt(d[town]);
+          const active = i === activeIndex;
+          ctx.beginPath();
+          const r = isHover ? (active ? 6.2 : 4.8) : isHam ? (active ? 5.8 : 4.2) : (active ? 4.2 : 2.8);
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fillStyle = colors[town];
+          ctx.globalAlpha = dimmed ? 0.18 : isHover || isHam ? 1 : 0.8;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          if ((isHam || isHover) && active) {
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "rgba(255,255,255,0.85)";
+            ctx.stroke();
+          }
+        });
+      });
+
+      series.forEach((d, i) => {
+        if (i === 0 || i === series.length - 1 || i % 3 === 0) {
+          ctx.fillStyle = "#9aacc8";
+          ctx.font = "12px Outfit, sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "top";
+          ctx.fillText(String(d.year), xAt(i), pad.t + h + 10);
+        }
+      });
+
+      const ax = xAt(activeIndex);
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = "rgba(232, 238, 252, 0.35)";
+      ctx.beginPath();
+      ctx.moveTo(ax, pad.t);
+      ctx.lineTo(ax, pad.t + h);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Label hovered town near its active-year point
+      if (hoverTown) {
+        const d = series[activeIndex];
+        const x = xAt(activeIndex);
+        const y = yAt(d[hoverTown]);
+        ctx.font = "600 13px Outfit, sans-serif";
+        ctx.textAlign = x > cssW * 0.7 ? "right" : "left";
+        ctx.textBaseline = "bottom";
+        ctx.fillStyle = "#fff8ea";
+        ctx.fillText(hoverTown, x + (x > cssW * 0.7 ? -8 : 8), y - 8);
+      }
+    }
+
+    function nearestTownOnChart(mx, my) {
+      const layout = state.chartLayout;
+      if (!layout) return null;
+      const { series, towns } = state.data;
+      const { xAt, yAt, pad, w, h } = layout;
+
+      if (mx < pad.l - 8 || mx > pad.l + w + 8 || my < pad.t - 8 || my > pad.t + h + 8) {
+        return null;
+      }
+
+      // Nearest year index by x
+      let bestYear = 0;
+      let bestYearDist = Infinity;
+      series.forEach((d, i) => {
+        const dx = Math.abs(xAt(i) - mx);
+        if (dx < bestYearDist) {
+          bestYearDist = dx;
+          bestYear = i;
+        }
+      });
+
+      let best = null;
+      towns.forEach((town) => {
+        // distance to point at nearest year
+        const x = xAt(bestYear);
+        const y = yAt(series[bestYear][town]);
+        const distPoint = Math.hypot(mx - x, my - y);
+
+        // also distance to line segment around that year
+        let distLine = distPoint;
+        const i0 = Math.max(0, bestYear - 1);
+        const i1 = Math.min(series.length - 1, bestYear + 1);
+        for (let i = i0; i < i1; i++) {
+          const x1 = xAt(i);
+          const y1 = yAt(series[i][town]);
+          const x2 = xAt(i + 1);
+          const y2 = yAt(series[i + 1][town]);
+          const dx = x2 - x1;
+          const dy = y2 - y1;
+          const len2 = dx * dx + dy * dy || 1;
+          let t = ((mx - x1) * dx + (my - y1) * dy) / len2;
+          t = Math.max(0, Math.min(1, t));
+          const px = x1 + t * dx;
+          const py = y1 + t * dy;
+          distLine = Math.min(distLine, Math.hypot(mx - px, my - py));
+        }
+
+        const dist = Math.min(distPoint, distLine);
+        // Prefer Hamilton slightly when ambiguous, and hovered threshold
+        const score = dist - (town === state.data.highlight ? 0.8 : 0);
+        if (!best || score < best.score) {
+          best = {
+            town,
+            score,
+            dist,
+            yearIndex: bestYear,
+            year: series[bestYear].year,
+            value: series[bestYear][town],
+            x,
+            y,
+          };
+        }
+      });
+
+      if (!best || best.dist > 18) return null;
+      return best;
+    }
+
+    function onChartMove(evt) {
+      const rect = canvas.getBoundingClientRect();
+      const mx = evt.clientX - rect.left;
+      const my = evt.clientY - rect.top;
+      const hit = nearestTownOnChart(mx, my);
+      if (!hit) {
+        state.chartHover = null;
+        if (state.hoverTown) setHoverTown(null);
+        return;
+      }
+      state.chartHover = hit;
+      setHoverTown(hit.town, { source: "chart", clientX: evt.clientX, clientY: evt.clientY });
+    }
+
+    function stopPlay() {
+      state.playing = false;
+      playBtn.setAttribute("aria-pressed", "false");
+      playBtn.textContent = "Play years";
+      if (state.timer) {
+        clearInterval(state.timer);
+        state.timer = null;
+      }
+    }
+
+    function startPlay() {
+      state.playing = true;
+      playBtn.setAttribute("aria-pressed", "true");
+      playBtn.textContent = "Pause";
+      state.timer = setInterval(() => {
+        const next = state.index + 1;
+        setYear(next >= state.data.series.length ? 0 : next);
+      }, 900);
+    }
+
+    async function init() {
+      const [res, overlayRes] = await Promise.all([
+        fetch("assets/percapita_timeseries.json"),
+        fetch("assets/compare_overlay.json"),
+      ]);
+      state.data = await res.json();
+      const overlay = await overlayRes.json();
+      yearSlider.max = String(state.data.series.length - 1);
+
+      const [x0, y0, vw, vh] = overlay.viewBox;
+      townOverlay.setAttribute("viewBox", `${x0} ${y0} ${vw} ${vh}`);
+      overlay.paths.forEach((p) => {
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", p.d);
+        path.setAttribute("data-town", p.town);
+        path.setAttribute("tabindex", "0");
+        path.setAttribute("role", "button");
+        path.setAttribute("aria-label", p.town);
+        if (p.highlight || p.town === "Hamilton") {
+          path.classList.add("is-hamilton");
+        }
+        path.addEventListener("pointerenter", (e) => {
+          setHoverTown(p.town, { source: "map", clientX: e.clientX, clientY: e.clientY });
+        });
+        path.addEventListener("pointermove", (e) => {
+          setHoverTown(p.town, { source: "map", clientX: e.clientX, clientY: e.clientY });
+        });
+        path.addEventListener("pointerleave", () => {
+          setHoverTown(null);
+        });
+        path.addEventListener("focus", () => setHoverTown(p.town, { source: "legend" }));
+        path.addEventListener("blur", () => setHoverTown(null));
+        townOverlay.appendChild(path);
+      });
+
+      legendEl.innerHTML = state.data.towns
+        .map((t) => {
+          const ham = t === state.data.highlight ? " is-hamilton" : "";
+          return `<span class="${ham.trim()}" data-town="${t}"><i style="background:${state.data.colors[t]}"></i>${t}</span>`;
+        })
+        .join("");
+
+      legendEl.querySelectorAll("span[data-town]").forEach((el) => {
+        el.addEventListener("pointerenter", () => setHoverTown(el.dataset.town, { source: "legend" }));
+        el.addEventListener("pointerleave", () => setHoverTown(null));
+      });
+
+      state.preloaded = state.data.frames.map((fr) => {
+        const img = new Image();
+        img.src = fr.file;
+        return img;
+      });
+      await Promise.all(
+        state.preloaded.map(
+          (img) =>
+            new Promise((resolve) => {
+              if (img.complete) resolve();
+              else {
+                img.onload = resolve;
+                img.onerror = resolve;
+              }
+            })
+        )
+      );
+
+      mapImage.src = state.data.frames[0].file;
+      setYear(0);
+
+      yearSlider.addEventListener("input", () => {
+        stopPlay();
+        setYear(Number(yearSlider.value));
+      });
+      playBtn.addEventListener("click", () => {
+        if (state.playing) stopPlay();
+        else startPlay();
+      });
+      canvas.addEventListener("pointermove", onChartMove);
+      canvas.addEventListener("pointerleave", () => {
+        state.chartHover = null;
+        setHoverTown(null);
+      });
+      window.addEventListener("resize", () => drawChart(state.index));
+    }
+
+    init().catch((err) => {
+      document.querySelector(".lede").textContent =
+        "Could not load the per-capita data. Please check that assets/percapita_timeseries.json is available.";
+      console.error(err);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Night Lights Over Time · Hamilton &amp; Wenham</title>
+  <meta name="description" content="How artificial night light has changed over Hamilton and Wenham, Massachusetts, seen from NASA satellite observations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --night-0: #070b16;
+      --night-1: #0d1528;
+      --night-2: #15233f;
+      --mist: rgba(214, 226, 255, 0.72);
+      --ink: #e8eefc;
+      --muted: #9aacc8;
+      --amber: #f0b35a;
+      --amber-soft: rgba(240, 179, 90, 0.35);
+      --line: rgba(180, 200, 240, 0.18);
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Outfit", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.5;
+      background:
+        radial-gradient(1200px 700px at 15% -10%, rgba(70, 110, 180, 0.22), transparent 55%),
+        radial-gradient(900px 600px at 90% 10%, rgba(180, 120, 50, 0.12), transparent 50%),
+        linear-gradient(180deg, var(--night-0), var(--night-1) 45%, #0a1222 100%);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.35;
+      background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 28% 62%, rgba(255,255,255,0.45), transparent),
+        radial-gradient(1.5px 1.5px at 63% 22%, rgba(255,255,255,0.55), transparent),
+        radial-gradient(1px 1px at 81% 48%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 45% 80%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1.5px 1.5px at 72% 78%, rgba(255,255,255,0.5), transparent);
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: min(1080px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2.5rem 0 4rem;
+    }
+
+    .nav-link {
+      display: inline-block;
+      margin-bottom: 1.25rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      animation: rise 0.9s ease both;
+    }
+
+    .nav-link:hover {
+      color: var(--ink);
+      border-bottom-color: var(--amber-soft);
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin: 0 0 0.75rem;
+      animation: rise 0.9s ease both;
+    }
+
+    .lede {
+      max-width: 34rem;
+      color: var(--mist);
+      font-size: 1.08rem;
+      margin: 0 0 2.25rem;
+      animation: rise 0.9s ease 0.1s both;
+    }
+
+    .stage {
+      display: grid;
+      gap: 1.75rem;
+      animation: rise 0.9s ease 0.18s both;
+    }
+
+    @media (min-width: 900px) {
+      .stage {
+        grid-template-columns: 1.15fr 1fr;
+        align-items: start;
+        gap: 2.5rem;
+      }
+    }
+
+    .map-block { min-width: 0; }
+
+    .map-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 648 / 416;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #050814;
+      box-shadow: 0 0 0 1px var(--line), 0 30px 80px rgba(0,0,0,0.45);
+      /* Lock layout so year changes cannot shift the map on the page */
+      contain: layout size;
+    }
+
+    .map-frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      display: block;
+      transition: opacity 0.28s ease;
+    }
+
+    .map-frame img.is-fading { opacity: 0.35; }
+
+    .map-frame svg.town-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .map-frame svg.town-overlay path {
+      fill: none;
+      stroke: rgba(230, 238, 255, 0.9);
+      stroke-width: 1.6;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .year-badge {
+      position: absolute;
+      left: 0.9rem;
+      bottom: 0.85rem;
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      letter-spacing: 0.02em;
+      color: #fff8ea;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.8);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-top: 0.9rem;
+    }
+
+    button.play {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      padding: 0.55rem 0.95rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    button.play:hover {
+      background: rgba(240, 179, 90, 0.12);
+      border-color: var(--amber-soft);
+    }
+
+    .slider-wrap { flex: 1; min-width: 0; }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--amber);
+      cursor: pointer;
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 0.2rem;
+    }
+
+    .chart-block { min-width: 0; }
+
+    .chart-label {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      margin: 0 0 0.35rem;
+    }
+
+    .chart-note {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin: 0 0 0.85rem;
+      max-width: 28rem;
+    }
+
+    .chart-shell {
+      width: 100%;
+      height: 280px;
+      position: relative;
+    }
+
+    canvas#chart {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem 1.75rem;
+      margin-top: 0.85rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .stat-row strong {
+      color: var(--amber);
+      font-weight: 500;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.8rem;
+      max-width: 42rem;
+      animation: rise 0.9s ease 0.28s both;
+    }
+
+    .footer a { color: #c9d7f0; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .map-frame img { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p class="nav-link" style="border:0">
+      <a class="nav-link" href="compare.html">Compare neighboring towns →</a>
+      ·
+      <a class="nav-link" href="percapita.html">Per capita comparison →</a>
+    </p>
+    <h1 class="brand">Hamilton &amp; Wenham<br />Night Sky</h1>
+    <p class="lede">
+      A quiet look at how artificial light over our two towns has shifted since 2012,
+      measured by NASA’s nighttime satellite record.
+    </p>
+
+    <section class="stage" aria-label="Night lights over time">
+      <div class="map-block">
+        <div class="map-frame" id="mapFrame" aria-live="polite">
+          <img id="mapImage" alt="Night lights map for Hamilton and Wenham" width="648" height="416" />
+          <svg class="town-overlay" id="townOverlay" viewBox="0 0 648 416" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div class="year-badge" id="yearBadge">2012</div>
+        </div>
+        <div class="controls">
+          <button class="play" id="playBtn" type="button" aria-pressed="false">Play years</button>
+          <div class="slider-wrap">
+            <input id="yearSlider" type="range" min="0" max="13" value="0" step="1" aria-label="Select year" />
+            <div class="range-labels"><span>2012</span><span>2025</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-block">
+        <h2 class="chart-label">Brightness over the towns</h2>
+        <p class="chart-note">
+          Average snow-free night light inside Hamilton and Wenham town boundaries each year.
+        </p>
+        <div class="chart-shell">
+          <canvas id="chart" width="640" height="280" aria-label="Line chart of average night light from 2012 to 2025"></canvas>
+        </div>
+        <div class="stat-row">
+          <div>Selected year: <strong id="statYear">2012</strong></div>
+          <div>Town average: <strong id="statMean">—</strong></div>
+          <div>Since 2012: <strong id="statDelta">—</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Data: NASA Black Marble annual product VNP46A4 (Collection 2.0), snow-free all-angle composite,
+      tile h10v04. Units are nanowatts per square centimeter per steradian.
+      Town outlines from MassGIS. Map outlines show Hamilton and Wenham.
+      Satellite pixels are about 500 meters across, so this shows area-wide skyglow, not individual streetlights.
+      <br /><br />
+      Source:
+      <a href="https://doi.org/10.5067/VIIRS/VNP46A4.002" rel="noopener">doi:10.5067/VIIRS/VNP46A4.002</a>
+    </footer>
+  </main>
+
+  <script>
+    const state = {
+      data: null,
+      index: 0,
+      playing: false,
+      timer: null,
+      preloaded: [],
+      fadeToken: 0,
+    };
+
+    const mapImage = document.getElementById("mapImage");
+    const townOverlay = document.getElementById("townOverlay");
+    const yearBadge = document.getElementById("yearBadge");
+    const yearSlider = document.getElementById("yearSlider");
+    const playBtn = document.getElementById("playBtn");
+    const statYear = document.getElementById("statYear");
+    const statMean = document.getElementById("statMean");
+    const statDelta = document.getElementById("statDelta");
+    const canvas = document.getElementById("chart");
+    const ctx = canvas.getContext("2d");
+
+    function fmt(n) {
+      return n.toFixed(2);
+    }
+
+    function setYear(i) {
+      const series = state.data.series;
+      state.index = Math.max(0, Math.min(series.length - 1, i));
+      yearSlider.value = String(state.index);
+
+      const row = series[state.index];
+      const frame = state.data.frames[state.index];
+      const base = series[0].mean;
+      const delta = ((row.mean - base) / base) * 100;
+
+      // Swap a single image (no stacked frames) so layout cannot shift
+      const token = ++state.fadeToken;
+      mapImage.classList.add("is-fading");
+      window.setTimeout(() => {
+        if (token !== state.fadeToken) return;
+        mapImage.src = frame.file;
+        mapImage.alt = `Night lights map for ${row.year}`;
+        mapImage.classList.remove("is-fading");
+      }, 120);
+
+      yearBadge.textContent = String(row.year);
+      statYear.textContent = String(row.year);
+      statMean.textContent = `${fmt(row.mean)} nW/cm²/sr`;
+      const sign = delta > 0 ? "+" : "";
+      statDelta.textContent = `${sign}${delta.toFixed(1)}%`;
+
+      drawChart(state.index);
+    }
+
+    function drawChart(activeIndex) {
+      const series = state.data.series;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const cssW = canvas.clientWidth;
+      const cssH = canvas.clientHeight;
+      canvas.width = Math.floor(cssW * dpr);
+      canvas.height = Math.floor(cssH * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, cssW, cssH);
+
+      const pad = { t: 18, r: 16, b: 36, l: 44 };
+      const w = cssW - pad.l - pad.r;
+      const h = cssH - pad.t - pad.b;
+      const ys = series.map((d) => d.mean);
+      const yMin = Math.min(...ys) * 0.92;
+      const yMax = Math.max(...ys) * 1.08;
+
+      const xAt = (i) => pad.l + (i / (series.length - 1)) * w;
+      const yAt = (v) => pad.t + (1 - (v - yMin) / (yMax - yMin)) * h;
+
+      // grid
+      ctx.strokeStyle = "rgba(180, 200, 240, 0.12)";
+      ctx.lineWidth = 1;
+      for (let g = 0; g < 4; g++) {
+        const y = pad.t + (g / 3) * h;
+        ctx.beginPath();
+        ctx.moveTo(pad.l, y);
+        ctx.lineTo(pad.l + w, y);
+        ctx.stroke();
+      }
+
+      // y labels
+      ctx.fillStyle = "#9aacc8";
+      ctx.font = "12px Outfit, sans-serif";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      for (let g = 0; g < 4; g++) {
+        const val = yMax - ((yMax - yMin) * g) / 3;
+        const y = pad.t + (g / 3) * h;
+        ctx.fillText(val.toFixed(1), pad.l - 8, y);
+      }
+
+      // line
+      ctx.beginPath();
+      series.forEach((d, i) => {
+        const x = xAt(i);
+        const y = yAt(d.mean);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = "rgba(240, 179, 90, 0.9)";
+      ctx.lineWidth = 2.25;
+      ctx.stroke();
+
+      // soft area under line
+      ctx.lineTo(xAt(series.length - 1), pad.t + h);
+      ctx.lineTo(xAt(0), pad.t + h);
+      ctx.closePath();
+      const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + h);
+      grad.addColorStop(0, "rgba(240, 179, 90, 0.22)");
+      grad.addColorStop(1, "rgba(240, 179, 90, 0)");
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // points + x labels
+      series.forEach((d, i) => {
+        const x = xAt(i);
+        const y = yAt(d.mean);
+        const active = i === activeIndex;
+        ctx.beginPath();
+        ctx.arc(x, y, active ? 5.5 : 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = active ? "#fff4d8" : "#f0b35a";
+        ctx.fill();
+        if (active) {
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = "rgba(255,255,255,0.7)";
+          ctx.stroke();
+        }
+
+        if (i === 0 || i === series.length - 1 || i % 3 === 0) {
+          ctx.fillStyle = "#9aacc8";
+          ctx.font = "12px Outfit, sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "top";
+          ctx.fillText(String(d.year), x, pad.t + h + 10);
+        }
+      });
+
+      // active guide
+      const ax = xAt(activeIndex);
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = "rgba(232, 238, 252, 0.35)";
+      ctx.beginPath();
+      ctx.moveTo(ax, pad.t);
+      ctx.lineTo(ax, pad.t + h);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    function stopPlay() {
+      state.playing = false;
+      playBtn.setAttribute("aria-pressed", "false");
+      playBtn.textContent = "Play years";
+      if (state.timer) {
+        clearInterval(state.timer);
+        state.timer = null;
+      }
+    }
+
+    function startPlay() {
+      state.playing = true;
+      playBtn.setAttribute("aria-pressed", "true");
+      playBtn.textContent = "Pause";
+      state.timer = setInterval(() => {
+        const next = state.index + 1;
+        if (next >= state.data.series.length) {
+          setYear(0, { fromPlay: true });
+        } else {
+          setYear(next, { fromPlay: true });
+        }
+      }, 900);
+    }
+
+    async function init() {
+      const [res, overlayRes] = await Promise.all([
+        fetch("assets/timeseries.json"),
+        fetch("assets/town_overlay.json"),
+      ]);
+      state.data = await res.json();
+      const overlay = await overlayRes.json();
+      yearSlider.max = String(state.data.series.length - 1);
+
+      // Fixed town boundaries (do not change with year)
+      const [x0, y0, vw, vh] = overlay.viewBox;
+      townOverlay.setAttribute("viewBox", `${x0} ${y0} ${vw} ${vh}`);
+      overlay.paths.forEach((p) => {
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", p.d);
+        path.setAttribute("data-town", p.town);
+        townOverlay.appendChild(path);
+      });
+
+      // Preload frames so year changes are instant and stable
+      state.preloaded = state.data.frames.map((fr) => {
+        const img = new Image();
+        img.src = fr.file;
+        return img;
+      });
+      await Promise.all(
+        state.preloaded.map(
+          (img) =>
+            new Promise((resolve) => {
+              if (img.complete) resolve();
+              else {
+                img.onload = resolve;
+                img.onerror = resolve;
+              }
+            })
+        )
+      );
+
+      // Initial image without fade flicker
+      mapImage.src = state.data.frames[0].file;
+      yearBadge.textContent = String(state.data.series[0].year);
+      yearSlider.value = "0";
+      const row = state.data.series[0];
+      statYear.textContent = String(row.year);
+      statMean.textContent = `${fmt(row.mean)} nW/cm²/sr`;
+      statDelta.textContent = "0.0%";
+      drawChart(0);
+
+      yearSlider.addEventListener("input", () => {
+        stopPlay();
+        setYear(Number(yearSlider.value));
+      });
+      playBtn.addEventListener("click", () => {
+        if (state.playing) stopPlay();
+        else startPlay();
+      });
+      window.addEventListener("resize", () => drawChart(state.index));
+    }
+
+    init().catch((err) => {
+      document.querySelector(".lede").textContent =
+        "Could not load the night-lights data. Please check that assets/timeseries.json is available.";
+      console.error(err);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+{
+  "product": "VNP46A4",
+  "version": "2.0 / Collection 002",
+  "layer": "AllAngle_Composite_Snow_Free",
+  "units": "nW cm^-2 sr^-1",
+  "tile": "h10v04",
+  "bbox": {
+    "lon_min": -71.02,
+    "lon_max": -70.7,
+    "lat_min": 42.54,
+    "lat_max": 42.78
+  },
+  "display_vmax": 45.0,
+  "towns": [
+    "Hamilton",
+    "Wenham",
+    "Topsfield",
+    "Ipswich",
+    "Rowley",
+    "Essex"
+  ],
+  "colors": {
+    "Hamilton": "#f0b35a",
+    "Wenham": "#8ec5ff",
+    "Topsfield": "#7ddea0",
+    "Ipswich": "#d4a1ff",
+    "Rowley": "#ff8f9b",
+    "Essex": "#9ad7d0"
+  },
+  "highlight": "Hamilton",
+  "series": [
+    {
+      "year": 2012,
+      "Hamilton": 1.9502506125793766,
+      "Wenham": 3.074151911323877,
+      "Topsfield": 2.4301507313077044,
+      "Ipswich": 2.0488008565324196,
+      "Rowley": 1.8627633277915026,
+      "Essex": 1.0589320669914115
+    },
+    {
+      "year": 2013,
+      "Hamilton": 1.901398387756425,
+      "Wenham": 3.1456364641944283,
+      "Topsfield": 2.447105171913054,
+      "Ipswich": 2.1708840011235546,
+      "Rowley": 2.012395620738205,
+      "Essex": 1.0439573210375062
+    },
+    {
+      "year": 2014,
+      "Hamilton": 1.9369827139715434,
+      "Wenham": 3.218008209904321,
+      "Topsfield": 2.496385897659674,
+      "Ipswich": 2.154028545078986,
+      "Rowley": 2.0093038601702764,
+      "Essex": 1.1500234606451
+    },
+    {
+      "year": 2015,
+      "Hamilton": 1.7117529347357963,
+      "Wenham": 2.901054636179972,
+      "Topsfield": 2.225901356848275,
+      "Ipswich": 1.9181731870288359,
+      "Rowley": 1.7767699780432802,
+      "Essex": 0.9612860556306511
+    },
+    {
+      "year": 2016,
+      "Hamilton": 1.6540180671552898,
+      "Wenham": 2.71497679957383,
+      "Topsfield": 2.2379113662533645,
+      "Ipswich": 1.9737872806761194,
+      "Rowley": 1.850097785262685,
+      "Essex": 0.8801232252655358
+    },
+    {
+      "year": 2017,
+      "Hamilton": 1.6870021677692892,
+      "Wenham": 2.7406792696431386,
+      "Topsfield": 2.274530974830069,
+      "Ipswich": 1.8600940233206047,
+      "Rowley": 1.8741395344075404,
+      "Essex": 0.8979403250690164
+    },
+    {
+      "year": 2018,
+      "Hamilton": 1.7170126532253467,
+      "Wenham": 2.8132635363571934,
+      "Topsfield": 2.278383066886809,
+      "Ipswich": 1.8279428799801014,
+      "Rowley": 2.0665170005277584,
+      "Essex": 0.9212829074982939
+    },
+    {
+      "year": 2019,
+      "Hamilton": 1.7372023846939024,
+      "Wenham": 2.7132688589233287,
+      "Topsfield": 2.2276283182748933,
+      "Ipswich": 1.7699054592453383,
+      "Rowley": 2.1046482248133733,
+      "Essex": 0.984201624732593
+    },
+    {
+      "year": 2020,
+      "Hamilton": 1.6019817477295757,
+      "Wenham": 2.505905002569981,
+      "Topsfield": 1.966463229423616,
+      "Ipswich": 1.6532154044903375,
+      "Rowley": 1.9999157758919817,
+      "Essex": 0.7751704567465288
+    },
+    {
+      "year": 2021,
+      "Hamilton": 1.8046614042660485,
+      "Wenham": 2.724733763890301,
+      "Topsfield": 2.1858074502247136,
+      "Ipswich": 1.8212656253839241,
+      "Rowley": 2.2245423554589876,
+      "Essex": 1.0028279541895306
+    },
+    {
+      "year": 2022,
+      "Hamilton": 1.962667273606366,
+      "Wenham": 2.8286068705346086,
+      "Topsfield": 2.4261765154396615,
+      "Ipswich": 2.004710286965265,
+      "Rowley": 2.49548005332288,
+      "Essex": 1.185938412259365
+    },
+    {
+      "year": 2023,
+      "Hamilton": 2.0233981809635395,
+      "Wenham": 2.903045156019197,
+      "Topsfield": 2.5125025885861096,
+      "Ipswich": 2.05453997357365,
+      "Rowley": 2.542826099811416,
+      "Essex": 1.2205594382409393
+    },
+    {
+      "year": 2024,
+      "Hamilton": 1.9204397288411252,
+      "Wenham": 2.853089816278691,
+      "Topsfield": 2.318777247754539,
+      "Ipswich": 2.006892465054989,
+      "Rowley": 2.4273221441789676,
+      "Essex": 1.1164665114263008
+    },
+    {
+      "year": 2025,
+      "Hamilton": 2.0440095091155666,
+      "Wenham": 2.967336605778701,
+      "Topsfield": 2.5100889642064166,
+      "Ipswich": 2.1632673051208258,
+      "Rowley": 2.6802255485795046,
+      "Essex": 1.2798688815071666
+    }
+  ],
+  "frames": [
+    {
+      "year": 2012,
+      "file": "assets/compare_frames/2012.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2013,
+      "file": "assets/compare_frames/2013.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2014,
+      "file": "assets/compare_frames/2014.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2015,
+      "file": "assets/compare_frames/2015.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2016,
+      "file": "assets/compare_frames/2016.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2017,
+      "file": "assets/compare_frames/2017.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2018,
+      "file": "assets/compare_frames/2018.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2019,
+      "file": "assets/compare_frames/2019.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2020,
+      "file": "assets/compare_frames/2020.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2021,
+      "file": "assets/compare_frames/2021.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2022,
+      "file": "assets/compare_frames/2022.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2023,
+      "file": "assets/compare_frames/2023.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2024,
+      "file": "assets/compare_frames/2024.png",
+      "w": 539,
+      "h": 406
+    },
+    {
+      "year": 2025,
+      "file": "assets/compare_frames/2025.png",
+      "w": 539,
+      "h": 406
+    }
+  ],
+  "source": "NASA Black Marble (LAADS DAAC)",
+  "note": "Annual mean snow-free nighttime radiance inside each town boundary."
+}
