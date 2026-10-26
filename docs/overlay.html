@@ -227,13 +227,13 @@
 
     <p class="hint">
       Amber / white = brighter relative to that town’s own range. Dark / transparent = dimmer.
-      Zoom and pan the basemap (OpenStreetMap).
+      Zoom and pan the street basemap to see where lights sit relative to roads and neighborhoods.
     </p>
 
     <footer class="footer">
       Night lights: NASA Black Marble VNP46A4 (snow-free annual composite), clipped to MassGIS town boundaries.
       Color stretch is the 2nd–98th percentile of each town’s radiance across 2012–2025 (fixed while you change years).
-      Basemap © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors.
+      Basemap: Esri World Dark Gray (no API key required for this tile service).
       <br /><br />
       <a href="https://doi.org/10.5067/VIIRS/VNP46A4.002" rel="noopener">doi:10.5067/VIIRS/VNP46A4.002</a>
     </footer>
@@ -356,14 +356,23 @@
         attributionControl: true,
       });
 
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: "abcd",
-        maxZoom: 19,
-      }).addTo(state.map);
-
-      // Prefer dark basemap so amber lights read clearly; still OSM-derived
+      // Free basemap (no API key). Esri dark gray reads well under amber lights.
+      L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+        {
+          attribution:
+            'Tiles &copy; Esri &mdash; Source: Esri, HERE, Garmin, FAO, NOAA, USGS',
+          maxZoom: 16,
+        }
+      ).addTo(state.map);
+      L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
+        {
+          attribution: "",
+          maxZoom: 16,
+          opacity: 0.9,
+        }
+      ).addTo(state.map);
 
       townSelect.addEventListener("change", () => {
         showTown(townSelect.value, state.yearIndex);
