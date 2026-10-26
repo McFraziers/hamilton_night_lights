@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Night Lights Per Capita · Hamilton &amp; Neighbors</title>
-  <meta name="description" content="Nighttime brightness standardized by population for Hamilton, Wenham, Topsfield, Ipswich, Rowley, and Essex, Massachusetts." />
+  <meta name="description" content="Nighttime brightness standardized by population for Hamilton and neighboring North Shore towns in Massachusetts." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -98,7 +98,7 @@
     .map-frame {
       position: relative;
       width: 100%;
-      aspect-ratio: 539 / 406;
+      aspect-ratio: 546 / 462;
       border-radius: 4px;
       overflow: hidden;
       background: #050814;
@@ -371,15 +371,15 @@
     <h1 class="brand">Light Per Person,<br />Side by Side</h1>
     <p class="lede">
       Nighttime satellite brightness for each town, divided by that town’s population
-      (per 1,000 residents). This helps compare places of different sizes.
-      Hamilton is highlighted on the map and in the chart.
+      (per 1,000 residents)—including Beverly, Danvers, and Peabody. This helps compare
+      places of different sizes. Hamilton is highlighted on the map and in the chart.
     </p>
 
     <section class="stage" aria-label="Night lights comparison over time">
       <div class="map-block">
         <div class="map-frame" id="mapFrame" aria-live="polite">
-          <img id="mapImage" alt="Night lights map for Hamilton and neighboring towns" width="539" height="406" />
-          <svg class="town-overlay" id="townOverlay" viewBox="0 0 539 406" preserveAspectRatio="none" role="img" aria-label="Town boundaries"></svg>
+          <img id="mapImage" alt="Night lights map for Hamilton and neighboring towns" width="546" height="462" />
+          <svg class="town-overlay" id="townOverlay" viewBox="0 0 546 462" preserveAspectRatio="none" role="img" aria-label="Town boundaries"></svg>
           <div class="tooltip" id="mapTooltip"></div>
           <div class="year-badge" id="yearBadge">2012</div>
         </div>

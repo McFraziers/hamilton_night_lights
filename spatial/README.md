@@ -24,15 +24,15 @@ MassGIS regularly updates the statewide layer; this file is a snapshot of Hamilt
 
 ## `north_shore_towns.geojson`
 
-Municipal boundary polygons for **Hamilton**, **Wenham**, **Topsfield**, **Ipswich**, **Rowley**, and **Essex**, Massachusetts (Essex County).
+Municipal boundary polygons for **Hamilton**, **Wenham**, **Topsfield**, **Ipswich**, **Rowley**, **Essex**, **Beverly**, **Danvers**, and **Peabody**, Massachusetts (Essex County).
 
 ### Source
 
 Same MassGIS Municipalities / `TOWNSSURVEY_POLYM` source as above.
 
-- **Filter:** `TOWN IN ('HAMILTON','WENHAM','TOPSFIELD','IPSWICH','ROWLEY','ESSEX')`
+- **Filter:** `TOWN IN ('HAMILTON','WENHAM','TOPSFIELD','IPSWICH','ROWLEY','ESSEX','BEVERLY','DANVERS','PEABODY')`
 - **CRS:** WGS 84 (EPSG:4326)
-- **Downloaded:** 2026-08-08
+- **Downloaded:** 2026-08-08; updated 2026-10-26 to add Beverly, Danvers, and Peabody
 
 ## `town_population.json`
 
@@ -40,4 +40,4 @@ Census population counts used for per-capita night-lights charts.
 
 - **Fields:** MassGIS `POP2010` and `POP2020` on the municipalities layer (U.S. Census)
 - **Method for annual values:** linear interpolation between 2010 and 2020; same annual change extrapolated for 2021–2025
-- **Towns:** Hamilton, Wenham, Topsfield, Ipswich, Rowley, Essex
+- **Towns:** Hamilton, Wenham, Topsfield, Ipswich, Rowley, Essex, Beverly, Danvers, Peabody
