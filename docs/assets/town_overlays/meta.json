@@ -1,0 +1,665 @@
+{
+  "towns": [
+    "Hamilton",
+    "Wenham",
+    "Topsfield",
+    "Ipswich",
+    "Rowley",
+    "Essex",
+    "Beverly",
+    "Danvers",
+    "Peabody"
+  ],
+  "years": [
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "scale": 10,
+  "pad_deg": 0.01,
+  "layer": "AllAngle_Composite_Snow_Free",
+  "stretch": "per-town 2nd\u201398th percentile across all years (fixed for year scrubbing)",
+  "overlays": {
+    "Hamilton": {
+      "bounds": {
+        "south": 42.58541666666076,
+        "west": -70.93125000000825,
+        "north": 42.66874999999416,
+        "east": -70.78958333334171
+      },
+      "vmin": 0.6025598216056823,
+      "vmax": 7.188307981491091,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 247,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/hamilton/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/hamilton/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/hamilton/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/hamilton/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/hamilton/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/hamilton/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/hamilton/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/hamilton/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/hamilton/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/hamilton/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/hamilton/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/hamilton/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/hamilton/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/hamilton/2025.png"
+        }
+      ]
+    },
+    "Wenham": {
+      "bounds": {
+        "south": 42.56874999999408,
+        "west": -70.94375000000824,
+        "north": 42.6354166666608,
+        "east": -70.8020833333417
+      },
+      "vmin": 0.8753362596035004,
+      "vmax": 10.08722076416015,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 139,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/wenham/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/wenham/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/wenham/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/wenham/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/wenham/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/wenham/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/wenham/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/wenham/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/wenham/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/wenham/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/wenham/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/wenham/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/wenham/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/wenham/2025.png"
+        }
+      ]
+    },
+    "Topsfield": {
+      "bounds": {
+        "south": 42.58958333332744,
+        "west": -70.99375000000819,
+        "north": 42.68124999999418,
+        "east": -70.88541666667496
+      },
+      "vmin": 0.7349037456512452,
+      "vmax": 9.391607513427733,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 205,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/topsfield/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/topsfield/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/topsfield/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/topsfield/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/topsfield/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/topsfield/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/topsfield/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/topsfield/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/topsfield/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/topsfield/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/topsfield/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/topsfield/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/topsfield/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/topsfield/2025.png"
+        }
+      ]
+    },
+    "Ipswich": {
+      "bounds": {
+        "south": 42.6229166666608,
+        "west": -70.97708333334154,
+        "north": 42.7479166666609,
+        "east": -70.71458333334178
+      },
+      "vmin": 0.0,
+      "vmax": 10.773845863342284,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 544,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/ipswich/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/ipswich/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/ipswich/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/ipswich/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/ipswich/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/ipswich/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/ipswich/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/ipswich/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/ipswich/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/ipswich/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/ipswich/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/ipswich/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/ipswich/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/ipswich/2025.png"
+        }
+      ]
+    },
+    "Rowley": {
+      "bounds": {
+        "south": 42.66874999999416,
+        "west": -70.98541666667487,
+        "north": 42.76458333332758,
+        "east": -70.77708333334172
+      },
+      "vmin": 0.0,
+      "vmax": 9.408712673187251,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 304,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/rowley/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/rowley/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/rowley/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/rowley/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/rowley/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/rowley/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/rowley/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/rowley/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/rowley/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/rowley/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/rowley/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/rowley/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/rowley/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/rowley/2025.png"
+        }
+      ]
+    },
+    "Essex": {
+      "bounds": {
+        "south": 42.58541666666076,
+        "west": -70.82708333334168,
+        "north": 42.68541666666084,
+        "east": -70.7229166666751
+      },
+      "vmin": 0.0,
+      "vmax": 4.965090112686156,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 232,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/essex/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/essex/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/essex/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/essex/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/essex/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/essex/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/essex/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/essex/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/essex/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/essex/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/essex/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/essex/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/essex/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/essex/2025.png"
+        }
+      ]
+    },
+    "Beverly": {
+      "bounds": {
+        "south": 42.52708333332738,
+        "west": -70.93125000000825,
+        "north": 42.60208333332744,
+        "east": -70.78125000000838
+      },
+      "vmin": 1.3068801021575929,
+      "vmax": 43.75315422058105,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 246,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/beverly/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/beverly/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/beverly/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/beverly/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/beverly/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/beverly/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/beverly/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/beverly/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/beverly/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/beverly/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/beverly/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/beverly/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/beverly/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/beverly/2025.png"
+        }
+      ]
+    },
+    "Danvers": {
+      "bounds": {
+        "south": 42.53124999999406,
+        "west": -71.0145833333415,
+        "north": 42.6229166666608,
+        "east": -70.89791666667494
+      },
+      "vmin": 2.3988547945022582,
+      "vmax": 70.41856185913086,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 222,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/danvers/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/danvers/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/danvers/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/danvers/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/danvers/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/danvers/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/danvers/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/danvers/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/danvers/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/danvers/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/danvers/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/danvers/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/danvers/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/danvers/2025.png"
+        }
+      ]
+    },
+    "Peabody": {
+      "bounds": {
+        "south": 42.48541666666068,
+        "west": -71.04375000000815,
+        "north": 42.5812499999941,
+        "east": -70.90208333334161
+      },
+      "vmin": 4.189282846450806,
+      "vmax": 56.73572616577146,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 274,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/peabody/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/peabody/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/peabody/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/peabody/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/peabody/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/peabody/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/peabody/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/peabody/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/peabody/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/peabody/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/peabody/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/peabody/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/peabody/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/peabody/2025.png"
+        }
+      ]
+    }
+  }
+}

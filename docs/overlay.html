@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Night Lights on the Map · North Shore</title>
+  <meta name="description" content="Overlay NASA night lights on a street map for North Shore Massachusetts towns." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <style>
+    :root {
+      --night-0: #070b16;
+      --night-1: #0d1528;
+      --mist: rgba(214, 226, 255, 0.72);
+      --ink: #e8eefc;
+      --muted: #9aacc8;
+      --amber: #f0b35a;
+      --amber-soft: rgba(240, 179, 90, 0.35);
+      --line: rgba(180, 200, 240, 0.18);
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Outfit", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 300;
+      background: linear-gradient(180deg, var(--night-0), var(--night-1));
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(1100px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2rem 0 3rem;
+    }
+
+    .nav-link {
+      display: inline-block;
+      margin: 0 0.35rem 1rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+    .nav-link:hover {
+      color: var(--ink);
+      border-bottom-color: var(--amber-soft);
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin: 0 0 0.6rem;
+    }
+
+    .lede {
+      max-width: 38rem;
+      color: var(--mist);
+      margin: 0 0 1.5rem;
+      font-size: 1.05rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      align-items: end;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    select, input[type="range"] {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--ink);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+    }
+
+    select { min-width: 11rem; cursor: pointer; }
+    input[type="range"] {
+      width: min(280px, 60vw);
+      padding: 0.4rem 0;
+      accent-color: var(--amber);
+      cursor: pointer;
+    }
+
+    .year-readout {
+      color: var(--amber);
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    .map-shell {
+      position: relative;
+      height: min(62vh, 560px);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px var(--line), 0 24px 60px rgba(0,0,0,0.4);
+    }
+
+    #map { width: 100%; height: 100%; background: #0a1020; }
+
+    .legend-card {
+      position: absolute;
+      z-index: 1000;
+      right: 0.75rem;
+      bottom: 0.75rem;
+      background: rgba(8, 14, 28, 0.9);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.65rem 0.8rem;
+      color: var(--ink);
+      font-size: 0.78rem;
+      min-width: 9.5rem;
+      pointer-events: none;
+    }
+
+    .legend-card strong {
+      display: block;
+      font-weight: 500;
+      color: #ffe2a8;
+      margin-bottom: 0.35rem;
+      font-size: 0.84rem;
+    }
+
+    .legend-bar {
+      width: 100%;
+      height: 12px;
+      border-radius: 3px;
+      margin: 0.35rem 0 0.25rem;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+
+    .legend-scale {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .hint {
+      margin-top: 0.85rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.78rem;
+      max-width: 46rem;
+    }
+    .footer a { color: #c9d7f0; }
+
+    /* Darken Leaflet attribution slightly */
+    .leaflet-control-attribution {
+      background: rgba(8, 14, 28, 0.75) !important;
+      color: #9aacc8 !important;
+    }
+    .leaflet-control-attribution a { color: #c9d7f0 !important; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p style="margin:0">
+      <a class="nav-link" href="index.html">Hamilton &amp; Wenham</a>
+      ·
+      <a class="nav-link" href="compare.html">Compare towns</a>
+      ·
+      <a class="nav-link" href="percapita.html">Per capita</a>
+    </p>
+
+    <h1 class="brand">Lights on the map</h1>
+    <p class="lede">
+      Pick a town to see where NASA night lights are brightest inside its borders.
+      Colors are stretched for that town alone, so local hotspots stand out on the street map.
+    </p>
+
+    <div class="controls">
+      <label>
+        Town
+        <select id="townSelect" aria-label="Select town"></select>
+      </label>
+      <label>
+        Year <span class="year-readout" id="yearReadout">2012</span>
+        <input id="yearSlider" type="range" min="0" max="13" value="0" step="1" aria-label="Select year" />
+      </label>
+      <label>
+        Overlay opacity
+        <input id="opacitySlider" type="range" min="20" max="100" value="75" step="5" aria-label="Overlay opacity" />
+      </label>
+    </div>
+
+    <div class="map-shell">
+      <div id="map" role="region" aria-label="Street map with night lights overlay"></div>
+      <div class="legend-card" id="legend">
+        <strong id="legendTown">Hamilton</strong>
+        <div>Relative brightness in town</div>
+        <div class="legend-bar" id="legendBar"></div>
+        <div class="legend-scale">
+          <span id="legendMin">low</span>
+          <span id="legendMax">high</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="hint">
+      Amber / white = brighter relative to that town’s own range. Dark / transparent = dimmer.
+      Zoom and pan the basemap (OpenStreetMap).
+    </p>
+
+    <footer class="footer">
+      Night lights: NASA Black Marble VNP46A4 (snow-free annual composite), clipped to MassGIS town boundaries.
+      Color stretch is the 2nd–98th percentile of each town’s radiance across 2012–2025 (fixed while you change years).
+      Basemap © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors.
+      <br /><br />
+      <a href="https://doi.org/10.5067/VIIRS/VNP46A4.002" rel="noopener">doi:10.5067/VIIRS/VNP46A4.002</a>
+    </footer>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    const state = {
+      meta: null,
+      geo: null,
+      map: null,
+      overlay: null,
+      boundary: null,
+      town: "Hamilton",
+      yearIndex: 0,
+      opacity: 0.75,
+    };
+
+    const townSelect = document.getElementById("townSelect");
+    const yearSlider = document.getElementById("yearSlider");
+    const yearReadout = document.getElementById("yearReadout");
+    const opacitySlider = document.getElementById("opacitySlider");
+    const legendTown = document.getElementById("legendTown");
+    const legendMin = document.getElementById("legendMin");
+    const legendMax = document.getElementById("legendMax");
+    const legendBar = document.getElementById("legendBar");
+
+    function townFeature(name) {
+      return state.geo.features.find(
+        (f) => f.properties.TOWN.toLowerCase() === name.toLowerCase()
+      );
+    }
+
+    function fmt(n) {
+      return n >= 10 ? n.toFixed(1) : n.toFixed(2);
+    }
+
+    function updateLegend(town) {
+      const o = state.meta.overlays[town];
+      legendTown.textContent = town;
+      legendMin.textContent = `${fmt(o.vmin)}`;
+      legendMax.textContent = `${fmt(o.vmax)}`;
+      legendBar.style.backgroundImage = "url('assets/town_overlays/legend_gradient.png')";
+    }
+
+    function showTown(town, yearIndex, { fit = null } = {}) {
+      const townChanged = state.town !== town || !state.overlay;
+      const shouldFit = fit === null ? townChanged : fit;
+      state.town = town;
+      state.yearIndex = yearIndex;
+      const o = state.meta.overlays[town];
+      const file = o.files[yearIndex];
+      const year = file.year;
+      yearReadout.textContent = String(year);
+      yearSlider.value = String(yearIndex);
+      townSelect.value = town;
+      updateLegend(town);
+
+      const bounds = [
+        [o.bounds.south, o.bounds.west],
+        [o.bounds.north, o.bounds.east],
+      ];
+
+      if (state.overlay) {
+        state.map.removeLayer(state.overlay);
+        state.overlay = null;
+      }
+      state.overlay = L.imageOverlay(file.file, bounds, {
+        opacity: state.opacity,
+        interactive: false,
+      }).addTo(state.map);
+
+      if (townChanged) {
+        if (state.boundary) {
+          state.map.removeLayer(state.boundary);
+          state.boundary = null;
+        }
+        const feat = townFeature(town);
+        if (feat) {
+          const isHam = town === "Hamilton";
+          state.boundary = L.geoJSON(feat, {
+            style: {
+              color: isHam ? "#f0b35a" : "#d6e2ff",
+              weight: isHam ? 2.5 : 1.8,
+              fillOpacity: 0,
+              opacity: 0.95,
+            },
+          }).addTo(state.map);
+        }
+      }
+
+      if (shouldFit) {
+        if (state.boundary) {
+          state.map.fitBounds(state.boundary.getBounds(), { padding: [28, 28], maxZoom: 13 });
+        } else {
+          state.map.fitBounds(bounds, { padding: [28, 28], maxZoom: 13 });
+        }
+      }
+    }
+
+    async function init() {
+      const [metaRes, geoRes] = await Promise.all([
+        fetch("assets/town_overlays/meta.json"),
+        fetch("assets/north_shore_towns.geojson"),
+      ]);
+      state.meta = await metaRes.json();
+      state.geo = await geoRes.json();
+
+      yearSlider.max = String(state.meta.years.length - 1);
+      state.meta.towns.forEach((t) => {
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = t;
+        if (t === "Hamilton") opt.selected = true;
+        townSelect.appendChild(opt);
+      });
+
+      state.map = L.map("map", {
+        zoomControl: true,
+        attributionControl: true,
+      });
+
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: "abcd",
+        maxZoom: 19,
+      }).addTo(state.map);
+
+      // Prefer dark basemap so amber lights read clearly; still OSM-derived
+
+      townSelect.addEventListener("change", () => {
+        showTown(townSelect.value, state.yearIndex);
+      });
+      yearSlider.addEventListener("input", () => {
+        showTown(state.town, Number(yearSlider.value));
+      });
+      opacitySlider.addEventListener("input", () => {
+        state.opacity = Number(opacitySlider.value) / 100;
+        if (state.overlay) state.overlay.setOpacity(state.opacity);
+      });
+
+      showTown("Hamilton", state.meta.years.length - 1); // latest year
+    }
+
+    init().catch((err) => {
+      document.querySelector(".lede").textContent =
+        "Could not load overlay data. Check assets/town_overlays/meta.json.";
+      console.error(err);
+    });
+  </script>
+</body>
+</html>
