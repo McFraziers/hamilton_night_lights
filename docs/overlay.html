@@ -311,9 +311,8 @@
 
     <p class="hint">
       Amber / white = brighter relative to that town’s own range. Dark / transparent = dimmer.
-      The lower scale keeps the neighboring towns’ full brightness range fixed. The gold arrow marks
-      the bright end of the town on the map, so Hamilton’s own colors can fill the map while the arrow
-      still sits low next to Danvers.
+      The lower scale runs from 0 to the brightest value among these towns. The gold arrow marks
+      the bright end of the town on the map.
       Zoom and pan the street basemap to see where lights sit relative to roads and neighborhoods.
     </p>
 
@@ -369,19 +368,12 @@
     }
 
     function comparisonRange() {
-      const towns = state.meta.towns.filter((t) => t !== "Hamilton");
-      let min = Infinity;
-      let max = -Infinity;
-      let maxTown = towns[0];
-      towns.forEach((t) => {
+      let max = 0;
+      state.meta.towns.forEach((t) => {
         const o = state.meta.overlays[t];
-        if (o.vmin < min) min = o.vmin;
-        if (o.vmax > max) {
-          max = o.vmax;
-          maxTown = t;
-        }
+        if (o && o.vmax > max) max = o.vmax;
       });
-      return { min, max, maxTown };
+      return { min: 0, max };
     }
 
     function updateLegend(town) {
@@ -396,11 +388,11 @@
       const pct = Math.max(0, Math.min(1, (o.vmax - range.min) / span));
       contextArrow.style.left = `${pct * 100}%`;
       contextMin.textContent = fmt(range.min);
-      contextMax.textContent = `${range.maxTown} ${fmt(range.max)}`;
-      contextNote.textContent = `${town}’s bright end, ${fmt(o.vmax)}, on that neighboring range.`;
+      contextMax.textContent = fmt(range.max);
+      contextNote.textContent = `${town}’s bright end, ${fmt(o.vmax)}, on a scale from 0 to ${fmt(range.max)}.`;
       contextTrack.setAttribute(
         "aria-label",
-        `${town} bright end ${fmt(o.vmax)} on a scale from ${fmt(range.min)} to ${fmt(range.max)} in ${range.maxTown}`
+        `${town} bright end ${fmt(o.vmax)} on a scale from 0 to ${fmt(range.max)}`
       );
     }
 
