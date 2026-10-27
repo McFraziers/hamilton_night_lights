@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Night Lights Over Time · Hamilton &amp; Wenham</title>
-  <meta name="description" content="How artificial night light has changed over Hamilton and Wenham, Massachusetts, seen from NASA satellite observations." />
+  <title>Night Lights Over Time · Hamilton</title>
+  <meta name="description" content="How artificial night light has changed over Hamilton, Massachusetts, seen from NASA satellite observations." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -62,19 +62,44 @@
       padding: 2.5rem 0 4rem;
     }
 
-    .nav-link {
-      display: inline-block;
-      margin-bottom: 1.25rem;
-      color: var(--muted);
-      font-size: 0.9rem;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
+    .site-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 0 1.5rem;
+      padding: 0.28rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
       animation: rise 0.9s ease both;
     }
 
-    .nav-link:hover {
+    .site-tabs a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 400;
+      line-height: 1.2;
+      padding: 0.48rem 0.95rem;
+      border-radius: 999px;
+    }
+
+    .site-tabs a:hover {
       color: var(--ink);
-      border-bottom-color: var(--amber-soft);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .site-tabs a[aria-current="page"] {
+      color: #1c1408;
+      background: var(--amber);
+      font-weight: 500;
+    }
+
+    .site-tabs a[aria-current="page"]:hover {
+      color: #1c1408;
+      background: var(--amber);
     }
 
     .brand {
@@ -146,9 +171,15 @@
 
     .map-frame svg.town-overlay path {
       fill: none;
-      stroke: rgba(230, 238, 255, 0.9);
-      stroke-width: 1.6;
+      stroke: rgba(200, 214, 240, 0.4);
+      stroke-width: 1.2;
       vector-effect: non-scaling-stroke;
+    }
+
+    .map-frame svg.town-overlay path.is-hamilton {
+      stroke: #f0b35a;
+      stroke-width: 2.4;
+      filter: drop-shadow(0 0 4px rgba(240, 179, 90, 0.45));
     }
 
     .year-badge {
@@ -271,23 +302,23 @@
 </head>
 <body>
   <main class="wrap">
-    <p class="nav-link" style="border:0">
-      <a class="nav-link" href="compare.html">Compare towns →</a>
-      ·
-      <a class="nav-link" href="percapita.html">Per capita →</a>
-      ·
-      <a class="nav-link" href="overlay.html">Map overlay →</a>
-    </p>
-    <h1 class="brand">Hamilton &amp; Wenham<br />Night Sky</h1>
+    <nav class="site-tabs" aria-label="Pages">
+      <a href="index.html" aria-current="page">Hamilton</a>
+      <a href="compare.html">Compared with neighbors</a>
+      <a href="percapita.html">Light per person</a>
+      <a href="overlay.html">Street map</a>
+    </nav>
+    <h1 class="brand">Hamilton<br />Night Sky</h1>
     <p class="lede">
-      A quiet look at how artificial light over our two towns has shifted since 2012,
+      How artificial light over Hamilton has shifted since 2012,
       measured by NASA’s nighttime satellite record.
+      The other tabs place Hamilton next to neighboring towns, including Wenham, for comparison only.
     </p>
 
     <section class="stage" aria-label="Night lights over time">
       <div class="map-block">
         <div class="map-frame" id="mapFrame" aria-live="polite">
-          <img id="mapImage" alt="Night lights map for Hamilton and Wenham" width="648" height="416" />
+          <img id="mapImage" alt="Night lights map for Hamilton" width="648" height="416" />
           <svg class="town-overlay" id="townOverlay" viewBox="0 0 648 416" preserveAspectRatio="none" aria-hidden="true"></svg>
           <div class="year-badge" id="yearBadge">2012</div>
         </div>
@@ -301,16 +332,17 @@
       </div>
 
       <div class="chart-block">
-        <h2 class="chart-label">Brightness over the towns</h2>
+        <h2 class="chart-label">Brightness over Hamilton</h2>
         <p class="chart-note">
-          Average snow-free night light inside Hamilton and Wenham town boundaries each year.
+          Average snow-free night light inside Hamilton’s town boundary each year.
+          Wenham’s outline is on the map for comparison only.
         </p>
         <div class="chart-shell">
           <canvas id="chart" width="640" height="280" aria-label="Line chart of average night light from 2012 to 2025"></canvas>
         </div>
         <div class="stat-row">
           <div>Selected year: <strong id="statYear">2012</strong></div>
-          <div>Town average: <strong id="statMean">—</strong></div>
+          <div>Hamilton: <strong id="statMean">—</strong></div>
           <div>Since 2012: <strong id="statDelta">—</strong></div>
         </div>
       </div>
@@ -319,7 +351,7 @@
     <footer class="footer">
       Data: NASA Black Marble annual product VNP46A4 (Collection 2.0), snow-free all-angle composite,
       tile h10v04. Units are nanowatts per square centimeter per steradian.
-      Town outlines from MassGIS. Map outlines show Hamilton and Wenham.
+      Town outlines from MassGIS. The gold outline is Hamilton. Wenham is shown only for comparison.
       Satellite pixels are about 500 meters across, so this shows area-wide skyglow, not individual streetlights.
       <br /><br />
       Source:
@@ -359,8 +391,8 @@
 
       const row = series[state.index];
       const frame = state.data.frames[state.index];
-      const base = series[0].mean;
-      const delta = ((row.mean - base) / base) * 100;
+      const base = series[0].towns.Hamilton.mean;
+      const delta = ((row.towns.Hamilton.mean - base) / base) * 100;
 
       // Swap a single image (no stacked frames) so layout cannot shift
       const token = ++state.fadeToken;
@@ -374,7 +406,7 @@
 
       yearBadge.textContent = String(row.year);
       statYear.textContent = String(row.year);
-      statMean.textContent = `${fmt(row.mean)} nW/cm²/sr`;
+      statMean.textContent = `${fmt(row.towns.Hamilton.mean)} nW/cm²/sr`;
       const sign = delta > 0 ? "+" : "";
       statDelta.textContent = `${sign}${delta.toFixed(1)}%`;
 
@@ -394,7 +426,7 @@
       const pad = { t: 18, r: 16, b: 36, l: 44 };
       const w = cssW - pad.l - pad.r;
       const h = cssH - pad.t - pad.b;
-      const ys = series.map((d) => d.mean);
+      const ys = series.map((d) => d.towns.Hamilton.mean);
       const yMin = Math.min(...ys) * 0.92;
       const yMax = Math.max(...ys) * 1.08;
 
@@ -427,7 +459,7 @@
       ctx.beginPath();
       series.forEach((d, i) => {
         const x = xAt(i);
-        const y = yAt(d.mean);
+        const y = yAt(d.towns.Hamilton.mean);
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       });
@@ -448,7 +480,7 @@
       // points + x labels
       series.forEach((d, i) => {
         const x = xAt(i);
-        const y = yAt(d.mean);
+        const y = yAt(d.towns.Hamilton.mean);
         const active = i === activeIndex;
         ctx.beginPath();
         ctx.arc(x, y, active ? 5.5 : 3.5, 0, Math.PI * 2);
@@ -520,6 +552,7 @@
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", p.d);
         path.setAttribute("data-town", p.town);
+        path.classList.add(p.town === "Hamilton" ? "is-hamilton" : "is-compare");
         townOverlay.appendChild(path);
       });
 
@@ -548,7 +581,7 @@
       yearSlider.value = "0";
       const row = state.data.series[0];
       statYear.textContent = String(row.year);
-      statMean.textContent = `${fmt(row.mean)} nW/cm²/sr`;
+      statMean.textContent = `${fmt(row.towns.Hamilton.mean)} nW/cm²/sr`;
       statDelta.textContent = "0.0%";
       drawChart(0);
 

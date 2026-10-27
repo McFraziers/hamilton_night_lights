@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Night Lights on the Map · North Shore</title>
-  <meta name="description" content="Overlay NASA night lights on a street map for North Shore Massachusetts towns." />
+  <title>Night Lights on the Map · Hamilton</title>
+  <meta name="description" content="NASA night lights over Hamilton on a street map, with Wenham and other neighboring towns available for comparison." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -39,17 +39,43 @@
       padding: 2rem 0 3rem;
     }
 
-    .nav-link {
-      display: inline-block;
-      margin: 0 0.35rem 1rem 0;
-      color: var(--muted);
-      font-size: 0.9rem;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
+    .site-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 0 1.35rem;
+      padding: 0.28rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
     }
-    .nav-link:hover {
+
+    .site-tabs a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 400;
+      line-height: 1.2;
+      padding: 0.48rem 0.95rem;
+      border-radius: 999px;
+    }
+
+    .site-tabs a:hover {
       color: var(--ink);
-      border-bottom-color: var(--amber-soft);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .site-tabs a[aria-current="page"] {
+      color: #1c1408;
+      background: var(--amber);
+      font-weight: 500;
+    }
+
+    .site-tabs a[aria-current="page"]:hover {
+      color: #1c1408;
+      background: var(--amber);
     }
 
     .brand {
@@ -120,7 +146,7 @@
 
     .legend-card {
       position: absolute;
-      z-index: 1000;
+      z-index: 1100;
       right: 0.75rem;
       bottom: 0.75rem;
       background: rgba(8, 14, 28, 0.9);
@@ -129,7 +155,7 @@
       padding: 0.65rem 0.8rem;
       color: var(--ink);
       font-size: 0.78rem;
-      min-width: 9.5rem;
+      width: min(16.5rem, calc(100% - 1.5rem));
       pointer-events: none;
     }
 
@@ -153,8 +179,51 @@
     .legend-scale {
       display: flex;
       justify-content: space-between;
+      gap: 0.6rem;
       color: var(--muted);
       font-size: 0.72rem;
+    }
+
+    .context-scale {
+      margin-top: 0.7rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .context-track {
+      position: relative;
+      height: 18px;
+      margin: 0.3rem 0.35rem 0;
+    }
+
+    .context-track::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 1px;
+      height: 4px;
+      border-radius: 99px;
+      background: rgba(180, 200, 240, 0.38);
+    }
+
+    .context-arrow {
+      position: absolute;
+      bottom: 5px;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 9px solid #f0b35a;
+      transform: translateX(-50%);
+      filter: drop-shadow(0 0 4px rgba(240, 179, 90, 0.75));
+    }
+
+    .context-note {
+      margin-top: 0.28rem;
+      color: #ffe2a8;
+      font-size: 0.72rem;
+      line-height: 1.35;
     }
 
     .hint {
@@ -183,18 +252,19 @@
 </head>
 <body>
   <main class="wrap">
-    <p style="margin:0">
-      <a class="nav-link" href="index.html">Hamilton &amp; Wenham</a>
-      ·
-      <a class="nav-link" href="compare.html">Compare towns</a>
-      ·
-      <a class="nav-link" href="percapita.html">Per capita</a>
-    </p>
+    <nav class="site-tabs" aria-label="Pages">
+      <a href="index.html">Hamilton</a>
+      <a href="compare.html">Compared with neighbors</a>
+      <a href="percapita.html">Light per person</a>
+      <a href="overlay.html" aria-current="page">Street map</a>
+    </nav>
 
-    <h1 class="brand">Lights on the map</h1>
+    <h1 class="brand">Hamilton<br />on the street map</h1>
     <p class="lede">
-      Pick a town to see where NASA night lights are brightest inside its borders.
-      Colors are stretched for that town alone, so local hotspots stand out on the street map.
+      See where NASA night lights are brightest inside Hamilton.
+      Wenham and the other neighboring towns are listed under “For comparison”
+      so you can look at the same stretch of sky beside Hamilton. Colors are stretched
+      for the selected town alone, so local hotspots stand out.
     </p>
 
     <div class="controls">
@@ -222,16 +292,31 @@
           <span id="legendMin">low</span>
           <span id="legendMax">high</span>
         </div>
+        <div class="context-scale">
+          <div>Against neighboring towns</div>
+          <div class="context-track" id="contextTrack" role="img">
+            <div class="context-arrow" id="contextArrow"></div>
+          </div>
+          <div class="legend-scale">
+            <span id="contextMin">low</span>
+            <span id="contextMax">high</span>
+          </div>
+          <div class="context-note" id="contextNote"></div>
+        </div>
       </div>
     </div>
 
     <p class="hint">
       Amber / white = brighter relative to that town’s own range. Dark / transparent = dimmer.
+      The lower scale keeps the neighboring towns’ full brightness range fixed. The gold arrow marks
+      the bright end of the town on the map, so Hamilton’s own colors can fill the map while the arrow
+      still sits low next to Danvers.
       Zoom and pan the street basemap to see where lights sit relative to roads and neighborhoods.
     </p>
 
     <footer class="footer">
       Night lights: NASA Black Marble VNP46A4 (snow-free annual composite), clipped to MassGIS town boundaries.
+      Hamilton is the subject town. Wenham and the other towns in the menu are for comparison.
       Color stretch is the 2nd–98th percentile of each town’s radiance across 2012–2025 (fixed while you change years).
       Basemap: Esri World Dark Gray (no API key required for this tile service).
       <br /><br />
@@ -260,6 +345,11 @@
     const legendMin = document.getElementById("legendMin");
     const legendMax = document.getElementById("legendMax");
     const legendBar = document.getElementById("legendBar");
+    const contextTrack = document.getElementById("contextTrack");
+    const contextArrow = document.getElementById("contextArrow");
+    const contextMin = document.getElementById("contextMin");
+    const contextMax = document.getElementById("contextMax");
+    const contextNote = document.getElementById("contextNote");
 
     function townFeature(name) {
       return state.geo.features.find(
@@ -271,12 +361,40 @@
       return n >= 10 ? n.toFixed(1) : n.toFixed(2);
     }
 
+    function comparisonRange() {
+      const towns = state.meta.towns.filter((t) => t !== "Hamilton");
+      let min = Infinity;
+      let max = -Infinity;
+      let maxTown = towns[0];
+      towns.forEach((t) => {
+        const o = state.meta.overlays[t];
+        if (o.vmin < min) min = o.vmin;
+        if (o.vmax > max) {
+          max = o.vmax;
+          maxTown = t;
+        }
+      });
+      return { min, max, maxTown };
+    }
+
     function updateLegend(town) {
       const o = state.meta.overlays[town];
       legendTown.textContent = town;
       legendMin.textContent = `${fmt(o.vmin)}`;
       legendMax.textContent = `${fmt(o.vmax)}`;
       legendBar.style.backgroundImage = "url('assets/town_overlays/legend_gradient.png')";
+
+      const range = state.context;
+      const span = range.max - range.min || 1;
+      const pct = Math.max(0, Math.min(1, (o.vmax - range.min) / span));
+      contextArrow.style.left = `${pct * 100}%`;
+      contextMin.textContent = fmt(range.min);
+      contextMax.textContent = `${range.maxTown} ${fmt(range.max)}`;
+      contextNote.textContent = `${town}’s bright end, ${fmt(o.vmax)}, on that neighboring range.`;
+      contextTrack.setAttribute(
+        "aria-label",
+        `${town} bright end ${fmt(o.vmax)} on a scale from ${fmt(range.min)} to ${fmt(range.max)} in ${range.maxTown}`
+      );
     }
 
     function showTown(town, yearIndex, { fit = null } = {}) {
@@ -313,13 +431,13 @@
         }
         const feat = townFeature(town);
         if (feat) {
-          const isHam = town === "Hamilton";
+          const isHamilton = town === "Hamilton";
           state.boundary = L.geoJSON(feat, {
             style: {
-              color: isHam ? "#f0b35a" : "#d6e2ff",
-              weight: isHam ? 2.5 : 1.8,
+              color: isHamilton ? "#f0b35a" : "#9aacc8",
+              weight: isHamilton ? 2.5 : 1.5,
               fillOpacity: 0,
-              opacity: 0.95,
+              opacity: isHamilton ? 0.95 : 0.7,
             },
           }).addTo(state.map);
         }
@@ -341,14 +459,24 @@
       ]);
       state.meta = await metaRes.json();
       state.geo = await geoRes.json();
+      state.context = comparisonRange();
 
       yearSlider.max = String(state.meta.years.length - 1);
-      state.meta.towns.forEach((t) => {
-        const opt = document.createElement("option");
-        opt.value = t;
-        opt.textContent = t;
-        if (t === "Hamilton") opt.selected = true;
-        townSelect.appendChild(opt);
+      const focusTowns = ["Hamilton"];
+      [
+        ["Hamilton", state.meta.towns.filter((t) => focusTowns.includes(t))],
+        ["For comparison", state.meta.towns.filter((t) => !focusTowns.includes(t))],
+      ].forEach(([label, names]) => {
+        const group = document.createElement("optgroup");
+        group.label = label;
+        names.forEach((t) => {
+          const opt = document.createElement("option");
+          opt.value = t;
+          opt.textContent = t;
+          if (t === "Hamilton") opt.selected = true;
+          group.appendChild(opt);
+        });
+        townSelect.appendChild(group);
       });
 
       state.map = L.map("map", {

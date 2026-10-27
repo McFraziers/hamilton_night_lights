@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Night Lights Per Capita · Hamilton &amp; Neighbors</title>
-  <meta name="description" content="Nighttime brightness standardized by population for Hamilton and neighboring North Shore towns in Massachusetts." />
+  <title>Night Lights Per Person · Hamilton</title>
+  <meta name="description" content="Nighttime brightness per person in Hamilton, compared with neighboring towns including Wenham." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -158,7 +158,7 @@
       filter: drop-shadow(0 0 8px rgba(240, 179, 90, 0.65));
     }
 
-    .map-frame svg.town-overlay.is-dimming path:not(.is-hovered):not(.is-hamilton) {
+    .map-frame svg.town-overlay.is-dimming path:not(.is-hovered):not(.is-focus) {
       opacity: 0.35;
     }
 
@@ -248,14 +248,36 @@
 
     .legend {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.55rem 1rem;
+      flex-direction: column;
+      gap: 0.65rem;
       margin-top: 0.95rem;
       color: var(--muted);
       font-size: 0.86rem;
     }
 
-    .legend span {
+    .legend-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.4rem 0.85rem;
+    }
+
+    .legend-kicker {
+      flex: 0 0 auto;
+      min-width: 10.5rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .legend-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem 1rem;
+    }
+
+    .legend span[data-town] {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
@@ -263,11 +285,11 @@
       transition: color 0.15s ease, opacity 0.15s ease;
     }
 
-    .legend span.is-hovered {
+    .legend span[data-town].is-hovered {
       color: #fff;
     }
 
-    .legend.is-dimming span:not(.is-hovered) {
+    .legend.is-dimming span[data-town]:not(.is-hovered) {
       opacity: 0.4;
     }
 
@@ -278,13 +300,13 @@
       display: inline-block;
     }
 
-    .legend .is-hamilton {
-      color: #ffe2a8;
+    .legend .is-focus {
+      color: var(--ink);
       font-weight: 500;
     }
 
-    .legend .is-hamilton i {
-      box-shadow: 0 0 0 2px rgba(240, 179, 90, 0.35);
+    .legend .is-focus i {
+      box-shadow: 0 0 0 2px rgba(232, 238, 252, 0.4);
     }
 
     .chart-block { min-width: 0; }
@@ -341,18 +363,43 @@
 
     .footer a { color: #c9d7f0; }
 
-    .nav-link {
-      display: inline-block;
-      margin-bottom: 1.25rem;
-      color: var(--muted);
-      font-size: 0.9rem;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
+    .site-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 0 1.5rem;
+      padding: 0.28rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
     }
 
-    .nav-link:hover {
+    .site-tabs a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 400;
+      line-height: 1.2;
+      padding: 0.48rem 0.95rem;
+      border-radius: 999px;
+    }
+
+    .site-tabs a:hover {
       color: var(--ink);
-      border-bottom-color: var(--amber-soft);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .site-tabs a[aria-current="page"] {
+      color: #1c1408;
+      background: var(--amber);
+      font-weight: 500;
+    }
+
+    .site-tabs a[aria-current="page"]:hover {
+      color: #1c1408;
+      background: var(--amber);
     }
 
     @keyframes rise {
@@ -367,16 +414,18 @@
 </head>
 <body>
   <main class="wrap">
-    <p class="nav-link" style="border:0">
-      <a class="nav-link" href="compare.html">← Brightness by town</a>
-      ·
-      <a class="nav-link" href="overlay.html">Map overlay →</a>
-    </p>
-    <h1 class="brand">Light Per Person,<br />Side by Side</h1>
+    <nav class="site-tabs" aria-label="Pages">
+      <a href="index.html">Hamilton</a>
+      <a href="compare.html">Compared with neighbors</a>
+      <a href="percapita.html" aria-current="page">Light per person</a>
+      <a href="overlay.html">Street map</a>
+    </nav>
+    <h1 class="brand">Hamilton,<br />Light Per Person</h1>
     <p class="lede">
-      Nighttime satellite brightness for each town, divided by that town’s population
-      (per 1,000 residents)—including Beverly, Danvers, and Peabody. This helps compare
-      places of different sizes. Hamilton is highlighted on the map and in the chart.
+      Nighttime brightness in Hamilton, divided by the town’s population
+      (per 1,000 residents). Neighboring towns, including Wenham, are included so places
+      of different sizes can be compared. Those other towns are here for comparison only.
+      Hamilton stays highlighted on the map and in the chart.
     </p>
 
     <section class="stage" aria-label="Night lights comparison over time">
@@ -422,7 +471,7 @@
       Population uses MassGIS / U.S. Census town counts for 2010 and 2020, with linear interpolation
       between those years and the same annual change extrapolated for 2021–2025.
       The map still shows absolute night-light brightness (not per capita); the chart is population-standardized.
-      Town outlines from MassGIS. Satellite pixels are about 500 meters across.
+      Town outlines from MassGIS. Hamilton is the subject town. Wenham and the other neighboring towns are shown for comparison. Satellite pixels are about 500 meters across.
       <br /><br />
       Sources:
       <a href="https://doi.org/10.5067/VIIRS/VNP46A4.002" rel="noopener">doi:10.5067/VIIRS/VNP46A4.002</a>
@@ -453,6 +502,8 @@
     const yearSlider = document.getElementById("yearSlider");
     const playBtn = document.getElementById("playBtn");
     const legendEl = document.getElementById("legend");
+    const FOCUS = ["Hamilton"];
+
     const statYear = document.getElementById("statYear");
     const statHamilton = document.getElementById("statHamilton");
     const statDelta = document.getElementById("statDelta");
@@ -462,6 +513,13 @@
 
     function fmt(n) {
       return n.toFixed(1);
+    }
+
+    function changeSinceStart(series, row, town) {
+      const base = series[0][town];
+      const delta = ((row[town] - base) / base) * 100;
+      const sign = delta > 0 ? "+" : "";
+      return `${sign}${delta.toFixed(1)}%`;
     }
 
     function fmtPop(n) {
@@ -532,8 +590,6 @@
 
       const row = series[state.index];
       const frame = state.data.frames[state.index];
-      const base = series[0].Hamilton;
-      const delta = ((row.Hamilton - base) / base) * 100;
 
       const token = ++state.fadeToken;
       mapImage.classList.add("is-fading");
@@ -547,10 +603,9 @@
       yearBadge.textContent = String(row.year);
       statYear.textContent = String(row.year);
       statHamilton.textContent = `${fmt(row.Hamilton)} ${unitLabel()}`;
-      const sign = delta > 0 ? "+" : "";
-      statDelta.textContent = `${sign}${delta.toFixed(1)}%`;
-      const hamPop = state.data.population.by_year.Hamilton[String(row.year)];
-      statPop.textContent = fmtPop(hamPop);
+      statDelta.textContent = changeSinceStart(series, row, "Hamilton");
+      const pop = state.data.population.by_year;
+      statPop.textContent = fmtPop(pop.Hamilton[String(row.year)]);
 
       if (state.hoverTown) {
         syncHoverUI({ source: mapTooltip.classList.contains("is-visible") ? "map" : null });
@@ -559,7 +614,7 @@
     }
 
     function drawChart(activeIndex) {
-      const { series, towns, colors, highlight } = state.data;
+      const { series, towns, colors } = state.data;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const cssW = canvas.clientWidth;
       const cssH = canvas.clientHeight;
@@ -602,10 +657,14 @@
       }
 
       const hoverTown = state.hoverTown;
-      // Draw others first; Hamilton next; hovered town last on top
+      // Draw comparison towns first, Hamilton next, hovered town last
       const seen = new Set();
       const ordered = [];
-      [...towns.filter((t) => t !== highlight && t !== hoverTown), highlight, hoverTown]
+      [
+        ...towns.filter((t) => !FOCUS.includes(t) && t !== hoverTown),
+        ...FOCUS,
+        hoverTown,
+      ]
         .filter(Boolean)
         .forEach((t) => {
           if (!seen.has(t)) {
@@ -615,7 +674,7 @@
         });
 
       ordered.forEach((town) => {
-        const isHam = town === highlight;
+        const isHam = FOCUS.includes(town);
         const isHover = town === hoverTown;
         const dimmed = hoverTown && !isHover;
         ctx.beginPath();
@@ -728,7 +787,7 @@
         }
 
         const dist = Math.min(distPoint, distLine);
-        const score = dist - (town === state.data.highlight ? 0.6 : 0);
+        const score = dist - (FOCUS.includes(town) ? 0.6 : 0);
         if (!best || score < best.score) {
           best = {
             town,
@@ -822,8 +881,8 @@
         path.setAttribute("tabindex", "0");
         path.setAttribute("role", "button");
         path.setAttribute("aria-label", p.town);
-        if (p.highlight || p.town === "Hamilton") {
-          path.classList.add("is-hamilton");
+        if (p.town === "Hamilton") {
+          path.classList.add("is-focus", "is-hamilton");
         }
         path.addEventListener("pointerenter", (e) => {
           setHoverTown(p.town, { source: "map", clientX: e.clientX, clientY: e.clientY });
@@ -839,12 +898,21 @@
         townOverlay.appendChild(path);
       });
 
-      legendEl.innerHTML = state.data.towns
-        .map((t) => {
-          const ham = t === state.data.highlight ? " is-hamilton" : "";
-          return `<span class="${ham.trim()}" data-town="${t}"><i style="background:${state.data.colors[t]}"></i>${t}</span>`;
-        })
-        .join("");
+      const townChip = (t) => {
+        const focus = FOCUS.includes(t) ? " is-focus" : "";
+        return `<span class="${focus.trim()}" data-town="${t}"><i style="background:${state.data.colors[t]}"></i>${t}</span>`;
+      };
+      const focusTowns = FOCUS.filter((t) => state.data.towns.includes(t));
+      const compareTowns = state.data.towns.filter((t) => !FOCUS.includes(t));
+      legendEl.innerHTML = `
+        <div class="legend-group">
+          <span class="legend-kicker">Hamilton</span>
+          <div class="legend-items">${focusTowns.map(townChip).join("")}</div>
+        </div>
+        <div class="legend-group">
+          <span class="legend-kicker">For comparison</span>
+          <div class="legend-items">${compareTowns.map(townChip).join("")}</div>
+        </div>`;
 
       legendEl.querySelectorAll("span[data-town]").forEach((el) => {
         el.addEventListener("pointerenter", () => setHoverTown(el.dataset.town, { source: "legend" }));

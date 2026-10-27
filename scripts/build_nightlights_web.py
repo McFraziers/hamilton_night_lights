@@ -12,7 +12,7 @@ from matplotlib.path import Path as MplPath
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = Path("/home/shares/ohi/fisheries_explore/data/light_NASA")
+DATA = ROOT.parent / "data" / "light_NASA"
 GEO = ROOT / "spatial" / "hamilton_wenham_towns.geojson"
 OUT = ROOT / "web" / "assets"
 FRAMES = OUT / "frames"
