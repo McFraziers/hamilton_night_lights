@@ -312,7 +312,7 @@
     <p class="lede">
       How artificial light over Hamilton has shifted since 2012,
       measured by NASA’s nighttime satellite record.
-      The other tabs place Hamilton next to neighboring towns, including Wenham, for comparison only.
+      The other tabs place Hamilton next to neighboring towns for comparison only.
     </p>
 
     <section class="stage" aria-label="Night lights over time">
@@ -335,7 +335,6 @@
         <h2 class="chart-label">Brightness over Hamilton</h2>
         <p class="chart-note">
           Average snow-free night light inside Hamilton’s town boundary each year.
-          Wenham’s outline is on the map for comparison only.
         </p>
         <div class="chart-shell">
           <canvas id="chart" width="640" height="280" aria-label="Line chart of average night light from 2012 to 2025"></canvas>
@@ -351,7 +350,7 @@
     <footer class="footer">
       Data: NASA Black Marble annual product VNP46A4 (Collection 2.0), snow-free all-angle composite,
       tile h10v04. Units are nanowatts per square centimeter per steradian.
-      Town outlines from MassGIS. The gold outline is Hamilton. Wenham is shown only for comparison.
+      Town outlines from MassGIS. The gold outline is Hamilton.
       Satellite pixels are about 500 meters across, so this shows area-wide skyglow, not individual streetlights.
       <br /><br />
       Source:
@@ -549,10 +548,11 @@
       const [x0, y0, vw, vh] = overlay.viewBox;
       townOverlay.setAttribute("viewBox", `${x0} ${y0} ${vw} ${vh}`);
       overlay.paths.forEach((p) => {
+        if (p.town !== "Hamilton") return;
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", p.d);
         path.setAttribute("data-town", p.town);
-        path.classList.add(p.town === "Hamilton" ? "is-hamilton" : "is-compare");
+        path.classList.add("is-hamilton");
         townOverlay.appendChild(path);
       });
 

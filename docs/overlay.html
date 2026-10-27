@@ -121,6 +121,10 @@
     }
 
     select { min-width: 11rem; cursor: pointer; }
+    select option {
+      color: #000;
+      background: #fff;
+    }
     input[type="range"] {
       width: min(280px, 60vw);
       padding: 0.4rem 0;
@@ -262,9 +266,8 @@
     <h1 class="brand">Hamilton<br />on the street map</h1>
     <p class="lede">
       See where NASA night lights are brightest inside Hamilton.
-      Wenham and the other neighboring towns are listed under “For comparison”
-      so you can look at the same stretch of sky beside Hamilton. Colors are stretched
-      for the selected town alone, so local hotspots stand out.
+      Choose a town from the list to look at the same stretch of sky beside it.
+      Colors are stretched for the selected town alone, so local hotspots stand out.
     </p>
 
     <div class="controls">
@@ -352,9 +355,13 @@
     const contextNote = document.getElementById("contextNote");
 
     function townFeature(name) {
-      return state.geo.features.find(
-        (f) => f.properties.TOWN.toLowerCase() === name.toLowerCase()
-      );
+      const key = name.toLowerCase();
+      const aliases = { manchester: "manchester-by-the-sea" };
+      const alt = aliases[key];
+      return state.geo.features.find((f) => {
+        const town = f.properties.TOWN.toLowerCase();
+        return town === key || town === alt;
+      });
     }
 
     function fmt(n) {
@@ -462,21 +469,12 @@
       state.context = comparisonRange();
 
       yearSlider.max = String(state.meta.years.length - 1);
-      const focusTowns = ["Hamilton"];
-      [
-        ["Hamilton", state.meta.towns.filter((t) => focusTowns.includes(t))],
-        ["For comparison", state.meta.towns.filter((t) => !focusTowns.includes(t))],
-      ].forEach(([label, names]) => {
-        const group = document.createElement("optgroup");
-        group.label = label;
-        names.forEach((t) => {
-          const opt = document.createElement("option");
-          opt.value = t;
-          opt.textContent = t;
-          if (t === "Hamilton") opt.selected = true;
-          group.appendChild(opt);
-        });
-        townSelect.appendChild(group);
+      state.meta.towns.forEach((t) => {
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = t;
+        if (t === "Hamilton") opt.selected = true;
+        townSelect.appendChild(opt);
       });
 
       state.map = L.map("map", {

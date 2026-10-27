@@ -8,7 +8,11 @@
     "Essex",
     "Beverly",
     "Danvers",
-    "Peabody"
+    "Peabody",
+    "Manchester",
+    "Gloucester",
+    "Salem",
+    "Middleton"
   ],
   "years": [
     2012,
@@ -658,6 +662,286 @@
         {
           "year": 2025,
           "file": "assets/town_overlays/peabody/2025.png"
+        }
+      ]
+    },
+    "Manchester": {
+      "bounds": {
+        "south": 42.54374999999406,
+        "west": -70.82291666667501,
+        "north": 42.61041666666078,
+        "east": -70.70625000000845
+      },
+      "vmin": 0.680333057641983,
+      "vmax": 8.11894828796387,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 126,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/manchester/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/manchester/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/manchester/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/manchester/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/manchester/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/manchester/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/manchester/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/manchester/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/manchester/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/manchester/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/manchester/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/manchester/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/manchester/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/manchester/2025.png"
+        }
+      ]
+    },
+    "Gloucester": {
+      "bounds": {
+        "south": 42.56458333332742,
+        "west": -70.7687500000084,
+        "north": 42.69791666666086,
+        "east": -70.60625000000854
+      },
+      "vmin": 0.0,
+      "vmax": 26.697394371032715,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 434,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/gloucester/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/gloucester/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/gloucester/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/gloucester/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/gloucester/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/gloucester/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/gloucester/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/gloucester/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/gloucester/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/gloucester/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/gloucester/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/gloucester/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/gloucester/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/gloucester/2025.png"
+        }
+      ]
+    },
+    "Salem": {
+      "bounds": {
+        "south": 42.47291666666068,
+        "west": -70.96041666667489,
+        "north": 42.56041666666074,
+        "east": -70.77291666667506
+      },
+      "vmin": 0.7482947981357575,
+      "vmax": 57.48243194580077,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 137,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/salem/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/salem/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/salem/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/salem/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/salem/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/salem/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/salem/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/salem/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/salem/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/salem/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/salem/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/salem/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/salem/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/salem/2025.png"
+        }
+      ]
+    },
+    "Middleton": {
+      "bounds": {
+        "south": 42.5520833333274,
+        "west": -71.06875000000812,
+        "north": 42.65208333332748,
+        "east": -70.95625000000823
+      },
+      "vmin": 0.867898452281952,
+      "vmax": 23.65735778808593,
+      "units": "nW cm^-2 sr^-1",
+      "n_pixels": 239,
+      "files": [
+        {
+          "year": 2012,
+          "file": "assets/town_overlays/middleton/2012.png"
+        },
+        {
+          "year": 2013,
+          "file": "assets/town_overlays/middleton/2013.png"
+        },
+        {
+          "year": 2014,
+          "file": "assets/town_overlays/middleton/2014.png"
+        },
+        {
+          "year": 2015,
+          "file": "assets/town_overlays/middleton/2015.png"
+        },
+        {
+          "year": 2016,
+          "file": "assets/town_overlays/middleton/2016.png"
+        },
+        {
+          "year": 2017,
+          "file": "assets/town_overlays/middleton/2017.png"
+        },
+        {
+          "year": 2018,
+          "file": "assets/town_overlays/middleton/2018.png"
+        },
+        {
+          "year": 2019,
+          "file": "assets/town_overlays/middleton/2019.png"
+        },
+        {
+          "year": 2020,
+          "file": "assets/town_overlays/middleton/2020.png"
+        },
+        {
+          "year": 2021,
+          "file": "assets/town_overlays/middleton/2021.png"
+        },
+        {
+          "year": 2022,
+          "file": "assets/town_overlays/middleton/2022.png"
+        },
+        {
+          "year": 2023,
+          "file": "assets/town_overlays/middleton/2023.png"
+        },
+        {
+          "year": 2024,
+          "file": "assets/town_overlays/middleton/2024.png"
+        },
+        {
+          "year": 2025,
+          "file": "assets/town_overlays/middleton/2025.png"
         }
       ]
     }
