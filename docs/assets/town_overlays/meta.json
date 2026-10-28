@@ -45,7 +45,7 @@
       "vmin": 0.6025598216056823,
       "vmax": 7.188307981491091,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 247,
+      "n_pixels": 311,
       "files": [
         {
           "year": 2012,
@@ -103,7 +103,9 @@
           "year": 2025,
           "file": "assets/town_overlays/hamilton/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 247,
+      "buffer_m": 300.0
     },
     "Wenham": {
       "bounds": {
@@ -115,7 +117,7 @@
       "vmin": 0.8753362596035004,
       "vmax": 10.08722076416015,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 139,
+      "n_pixels": 176,
       "files": [
         {
           "year": 2012,
@@ -173,7 +175,9 @@
           "year": 2025,
           "file": "assets/town_overlays/wenham/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 139,
+      "buffer_m": 300.0
     },
     "Topsfield": {
       "bounds": {
@@ -185,7 +189,7 @@
       "vmin": 0.7349037456512452,
       "vmax": 9.391607513427733,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 205,
+      "n_pixels": 268,
       "files": [
         {
           "year": 2012,
@@ -243,7 +247,9 @@
           "year": 2025,
           "file": "assets/town_overlays/topsfield/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 205,
+      "buffer_m": 300.0
     },
     "Ipswich": {
       "bounds": {
@@ -255,7 +261,7 @@
       "vmin": 0.0,
       "vmax": 10.773845863342284,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 544,
+      "n_pixels": 714,
       "files": [
         {
           "year": 2012,
@@ -313,7 +319,9 @@
           "year": 2025,
           "file": "assets/town_overlays/ipswich/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 544,
+      "buffer_m": 300.0
     },
     "Rowley": {
       "bounds": {
@@ -325,7 +333,7 @@
       "vmin": 0.0,
       "vmax": 9.408712673187251,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 304,
+      "n_pixels": 396,
       "files": [
         {
           "year": 2012,
@@ -383,7 +391,9 @@
           "year": 2025,
           "file": "assets/town_overlays/rowley/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 304,
+      "buffer_m": 300.0
     },
     "Essex": {
       "bounds": {
@@ -395,7 +405,7 @@
       "vmin": 0.0,
       "vmax": 4.965090112686156,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 232,
+      "n_pixels": 315,
       "files": [
         {
           "year": 2012,
@@ -453,7 +463,9 @@
           "year": 2025,
           "file": "assets/town_overlays/essex/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 232,
+      "buffer_m": 300.0
     },
     "Beverly": {
       "bounds": {
@@ -465,7 +477,7 @@
       "vmin": 1.3068801021575929,
       "vmax": 43.75315422058105,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 246,
+      "n_pixels": 315,
       "files": [
         {
           "year": 2012,
@@ -523,7 +535,9 @@
           "year": 2025,
           "file": "assets/town_overlays/beverly/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 246,
+      "buffer_m": 300.0
     },
     "Danvers": {
       "bounds": {
@@ -535,7 +549,7 @@
       "vmin": 2.3988547945022582,
       "vmax": 70.41856185913086,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 222,
+      "n_pixels": 282,
       "files": [
         {
           "year": 2012,
@@ -593,7 +607,9 @@
           "year": 2025,
           "file": "assets/town_overlays/danvers/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 222,
+      "buffer_m": 300.0
     },
     "Peabody": {
       "bounds": {
@@ -605,7 +621,7 @@
       "vmin": 4.189282846450806,
       "vmax": 56.73572616577146,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 274,
+      "n_pixels": 328,
       "files": [
         {
           "year": 2012,
@@ -663,7 +679,9 @@
           "year": 2025,
           "file": "assets/town_overlays/peabody/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 274,
+      "buffer_m": 300.0
     },
     "Manchester": {
       "bounds": {
@@ -675,7 +693,7 @@
       "vmin": 0.680333057641983,
       "vmax": 8.11894828796387,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 126,
+      "n_pixels": 188,
       "files": [
         {
           "year": 2012,
@@ -733,7 +751,9 @@
           "year": 2025,
           "file": "assets/town_overlays/manchester/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 126,
+      "buffer_m": 300.0
     },
     "Gloucester": {
       "bounds": {
@@ -745,7 +765,7 @@
       "vmin": 0.0,
       "vmax": 26.697394371032715,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 434,
+      "n_pixels": 575,
       "files": [
         {
           "year": 2012,
@@ -803,7 +823,9 @@
           "year": 2025,
           "file": "assets/town_overlays/gloucester/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 434,
+      "buffer_m": 300.0
     },
     "Salem": {
       "bounds": {
@@ -815,7 +837,7 @@
       "vmin": 0.7482947981357575,
       "vmax": 57.48243194580077,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 137,
+      "n_pixels": 228,
       "files": [
         {
           "year": 2012,
@@ -873,7 +895,9 @@
           "year": 2025,
           "file": "assets/town_overlays/salem/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 137,
+      "buffer_m": 300.0
     },
     "Middleton": {
       "bounds": {
@@ -885,7 +909,7 @@
       "vmin": 0.867898452281952,
       "vmax": 23.65735778808593,
       "units": "nW cm^-2 sr^-1",
-      "n_pixels": 239,
+      "n_pixels": 292,
       "files": [
         {
           "year": 2012,
@@ -943,7 +967,10 @@
           "year": 2025,
           "file": "assets/town_overlays/middleton/2025.png"
         }
-      ]
+      ],
+      "n_pixels_in_town": 239,
+      "buffer_m": 300.0
     }
-  }
+  },
+  "pixel_select": "center inside the town line, or within 300 m of that line"
 }
